@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "alias": [
+    "api.citykleta-test.com"
+  ],
+  "name": "citykleta-api",
+  "builds": [
+    {
+      "src": "src/api/**/index.ts",
+      "use": "@now/node@canary"
+    }
+  ],
+  "routes": []
+}

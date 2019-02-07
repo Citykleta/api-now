@@ -1,0 +1,7 @@
+.idea
+node_modules
+src/conf/*.prod.env
+src/*.js
+src/**/*.js
+test/*.js
+test/**/*.js
