@@ -1,6 +1,19 @@
 import * as Koa from 'koa';
 
 export interface Endpoint {
-    //todo
-    (app: Koa, router: any): any
+    (app: Koa): any
+}
+
+export interface Coordinates {
+    ln: number;
+    lat: number;
+}
+
+export interface DirectionSearchQueryBody {
+    waypoints: Coordinates[];
+}
+
+export interface LocationSearchQueryBody {
+    query: string;
+    proximity?: Coordinates;
 }

@@ -1,9 +1,7 @@
 import * as Koa from 'koa';
-import * as Router from 'koa-router';
 import * as logger from 'koa-logger';
 import {Endpoint} from './interfaces';
 import error from './middlewares/error';
-// import {load} from 'conf-load';
 
 // process.stdout
 const defaultTransport = (str, args) => {
@@ -18,11 +16,8 @@ const applicationLogger = logger(process.env.NODE_ENV === 'test' ? muteTransport
 
 export const createApp = (endpoint: Endpoint) => {
     const app = new Koa();
-    const router = new Router();
     app.use(applicationLogger);
     app.use(error());
-    endpoint(app, router);
-    app.use(router.routes());
-    app.use(router.allowedMethods());
-    return app;
+    endpoint(app);
+    return app.callback();
 };

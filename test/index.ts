@@ -11,7 +11,7 @@ export const test = (description: string, func: SpecFunction) => harness.test(de
         const path = await globby('./test/{unit,int}/*.js');
         const absolutePath = path
             .map(relPath => resolve(process.cwd(), relPath));
-
+    
         for (const file of absolutePath) {
             const {default: func} = require(file);
             test(relative(process.cwd(), file), func);

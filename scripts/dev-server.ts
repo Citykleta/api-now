@@ -1,7 +1,24 @@
-import * as mount from 'koa-mount';
-import * as Koa from 'koa';
-import users from '../src/api/users/app';
+import {createServer} from 'http';
+import * as now from '../now.json';
+import {relative, resolve} from 'path';
 
-const app = new Koa();
-app.use(mount('/users', users()));
-app.listen(3000);
+const {routes} = now;
+const router = routes.map(r => {
+    const handler1 = relative(__dirname, resolve(process.cwd(), r.dest));
+    return Object.assign(r, {regexp: new RegExp(r.src), handler: require(handler1.replace(/\?(.)*$/, '')).default});
+});
+
+const handler = (req, res) => {
+    const {url} = req;
+    for (const {regexp, handler, dest} of router) {
+        if (regexp.test(url)) {
+            const [targetqs] = url.replace(regexp, dest).split('?').reverse();
+            req.url = ['?', targetqs].join('');
+            return handler(req, res);
+        }
+    }
+    res.status = 404;
+    res.end('Not Found');
+};
+
+createServer(handler).listen(3000);

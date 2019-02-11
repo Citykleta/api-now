@@ -1,8 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mount = require("koa-mount");
-const Koa = require("koa");
-const app_1 = require("../src/api/users/app");
-const app = new Koa();
-app.use(mount('/users', app_1.default()));
-app.listen(3000);
+const http_1 = require("http");
+const now = require("../now.json");
+const path_1 = require("path");
+const { routes } = now;
+const router = routes.map(r => {
+    const handler1 = path_1.relative(__dirname, path_1.resolve(process.cwd(), r.dest));
+    return Object.assign(r, { regexp: new RegExp(r.src), handler: require(handler1.replace(/\?(.)*$/, '')).default });
+});
+const handler = (req, res) => {
+    const { url } = req;
+    for (const { regexp, handler, dest } of router) {
+        if (regexp.test(url)) {
+            const [targetqs] = url.replace(regexp, dest).split('?').reverse();
+            req.url = ['?', targetqs].join('');
+            return handler(req, res);
+        }
+    }
+    res.status = 404;
+    res.end('Not Found');
+};
+http_1.createServer(handler).listen(3000);

@@ -4,11 +4,25 @@
     "api.citykleta-test.com"
   ],
   "name": "citykleta-api",
+  "env": {
+    "MAPBOX_TOKEN": "@mapbox-token",
+    "MAPBOX_USER": "lorenzofox"
+  },
   "builds": [
     {
-      "src": "src/api/**/index.ts",
-      "use": "@now/node@canary"
+      "src": "src/api/**/*.js",
+      "use": "@now/node"
     }
   ],
-  "routes": []
+  "routes": [
+    {
+      "src": "/search/locations",
+      "dest": "src/api/locations/search.js",
+      "methods":["POST"]
+    },
+    {
+      "src": "/search/directions",
+      "dest": "src/api/directions/search.js"
+    }
+  ]
 }
