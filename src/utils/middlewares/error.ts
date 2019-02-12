@@ -5,7 +5,9 @@ export default () => async (ctx: Context, next: Function) => {
     try {
         await next();
     } catch (e) {
-        console.error(e);
+        if (process.env.NODE_ENV !== 'test') {
+            console.error(e);
+        }
         ctx.status = e.status || 500;
     }
 };

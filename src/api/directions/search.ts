@@ -1,16 +1,22 @@
 import {Context} from 'koa';
 import {createApp} from '../../utils/app';
 import * as  body from 'koa-bodyparser';
-import * as schema from 'koa-json-schema';
+import {middleware as schema} from 'koa-json-schema';
 import {DirectionSearchQueryBody} from '../../utils/interfaces';
 import * as directionService from '@mapbox/mapbox-sdk/services/directions';
 import conf from '../../conf/index';
-// import service from '@mapbox/directions';
 
-// 23.13012/-82.41617
-//23.12694/-82.41304
+interface WayPoint {
+    coordinates: [number, number];
+    radius: 'unlimited';
+}
 
-const endpoint = async (ctx: Context, next: Function) => {
+interface MapboxRequestConfig {
+    profile: 'cycling';
+    waypoints: WayPoint[];
+}
+
+const endpoint = async (ctx: Context) => {
     // @ts-ignore;
     const {waypoints}: DirectionSearchQueryBody = ctx.request.body;
 
@@ -18,10 +24,12 @@ const endpoint = async (ctx: Context, next: Function) => {
         accessToken: conf.mapbox.token
     });
 
-    const mapboxConfigObject = {
+    const mapboxConfigObject: MapboxRequestConfig = {
         profile: 'cycling',
-        waypoints: waypoints.map(({ln, lat}) => ({
-            coordinates: [ln, lat]
+        // @ts-ignore
+        waypoints: waypoints.map(({ln, lat}: { ln: number, lat: number }) => ({
+            coordinates: [ln, lat],
+            radius: 'unlimited'
         }))
     };
 

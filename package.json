@@ -7,8 +7,10 @@
     "test": "test"
   },
   "scripts": {
-    "test": "NODE_ENV=test node ./test/index.js",
+    "test": "node  ./test/index.js",
+    "test:ci": "node  ./test/index.js | tap-set-exit",
     "build": "tsc",
+    "build:dev": "tsc -w",
     "dev": "tsc -w & nodemon ./scripts/dev-server.js"
   },
   "keywords": [
@@ -22,10 +24,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.0.47",
+    "dotenv": "^6.2.0",
     "find-my-way": "^1.18.0",
     "globby": "^9.0.0",
+    "nock": "^10.0.6",
     "nodemon": "^1.18.9",
     "supertest": "^3.4.2",
+    "tap-set-exit": "^1.1.1",
     "typescript": "^3.2.4",
     "zora": "^3.0.0-2"
   },
@@ -33,7 +38,7 @@
     "@mapbox/mapbox-sdk": "^0.5.0",
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
-    "koa-json-schema": "^2.0.1",
+    "koa-json-schema": "^3.0.0",
     "koa-logger": "^3.2.0"
   }
 }

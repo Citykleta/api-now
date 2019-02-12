@@ -18,11 +18,16 @@
     {
       "src": "/search/locations",
       "dest": "src/api/locations/search.js",
-      "methods":["POST"]
+      "methods": [
+        "POST"
+      ]
     },
     {
       "src": "/search/directions",
-      "dest": "src/api/directions/search.js"
+      "dest": "src/api/directions/search.js",
+      "methods": [
+        "POST"
+      ]
     }
   ]
 }

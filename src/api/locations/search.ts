@@ -1,7 +1,7 @@
 import {Context} from 'koa';
 import {createApp} from '../../utils/app';
 import * as  body from 'koa-bodyparser';
-import * as schema from 'koa-json-schema';
+import {middleware as schema} from 'koa-json-schema';
 import {LocationSearchQueryBody} from '../../utils/interfaces';
 import {HAVANA_BOUNDING_BOX} from '../../utils/constants';
 import * as mapboxSearch from '@mapbox/mapbox-sdk/services/geocoding';
