@@ -10,7 +10,8 @@
     "POSTGRES_HOST": "@db-host",
     "POSTGRES_USER": "@db-user",
     "POSTGRES_PASSWORD": "@db-password",
-    "POSTGRES_DB": "@db-name"
+    "POSTGRES_DB": "@db-name",
+    "CORS_ORIGIN": "https://app.citykleta-test.com"
   },
   "builds": [
     {
@@ -23,14 +24,16 @@
       "src": "/search/locations",
       "dest": "src/api/locations/search.js",
       "methods": [
-        "POST"
+        "POST",
+        "OPTIONS"
       ]
     },
     {
       "src": "/search/directions",
       "dest": "src/api/directions/search.js",
       "methods": [
-        "POST"
+        "POST",
+        "OPTIONS"
       ]
     }
   ]
