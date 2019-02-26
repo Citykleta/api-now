@@ -10,7 +10,7 @@ export default (t: Assert) => {
             .post('/')
             .send({
                 waypoints: [{
-                    ln: 1234,
+                    lng: 1234,
                     lat: 23445
                 }]
             })
@@ -48,10 +48,10 @@ export default (t: Assert) => {
             .post('/')
             .send({
                 waypoints: [{
-                    ln: -82.41457,
+                    lng: -82.41457,
                     lat: 23.12719
                 }, {
-                    ln: -82.41601,
+                    lng: -82.41601,
                     lat: 23.13006
                 }]
             })

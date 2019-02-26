@@ -5,7 +5,7 @@ export interface Endpoint {
 }
 
 export interface Coordinates {
-    ln: number;
+    lng: number;
     lat: number;
 }
 

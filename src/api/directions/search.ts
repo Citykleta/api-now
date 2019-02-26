@@ -27,8 +27,8 @@ const endpoint = async (ctx: Context) => {
     const mapboxConfigObject: MapboxRequestConfig = {
         profile: 'cycling',
         // @ts-ignore
-        waypoints: waypoints.map(({ln, lat}: { ln: number, lat: number }) => ({
-            coordinates: [ln, lat],
+        waypoints: waypoints.map(({lng, lat}: { lng: number, lat: number }) => ({
+            coordinates: [lng, lat],
             radius: 'unlimited'
         }))
     };
@@ -48,14 +48,14 @@ const schemaDefinition = {
             items: {
                 type: 'object',
                 properties: {
-                    ln: {
+                    lng: {
                         type: 'number',
                     },
                     lat: {
                         type: 'number'
                     }
                 },
-                required: ['ln', 'lat']
+                required: ['lng', 'lat']
             },
             minItems: 2
         }

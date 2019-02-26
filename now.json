@@ -6,7 +6,11 @@
   "name": "citykleta-api",
   "env": {
     "MAPBOX_TOKEN": "@mapbox-token",
-    "MAPBOX_USER": "lorenzofox"
+    "MAPBOX_USER": "lorenzofox",
+    "POSTGRES_HOST": "@db-host",
+    "POSTGRES_USER": "@db-user",
+    "POSTGRES_PASSWORD": "@db-password",
+    "POSTGRES_DB": "@db-name"
   },
   "builds": [
     {
