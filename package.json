@@ -7,11 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node  ./test/index.js",
-    "test:ci": "node  ./test/index.js | tap-set-exit",
+    "test": "node ./test/index.js",
+    "test:ci": "node ./test/index.js | tap-set-exit",
     "build": "tsc",
     "build:dev": "tsc -w",
-    "dev": "tsc -w & nodemon ./scripts/dev-server.js"
+    "dev": "tsc -w & nodemon ./scripts/dev-server.js",
+    "now-build": "npm run build"
   },
   "keywords": [
     "citykleta",

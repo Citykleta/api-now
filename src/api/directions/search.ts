@@ -26,6 +26,7 @@ const endpoint = async (ctx: Context) => {
 
     const mapboxConfigObject: MapboxRequestConfig = {
         profile: 'cycling',
+        // steps: true,
         // @ts-ignore
         waypoints: waypoints.map(({lng, lat}: { lng: number, lat: number }) => ({
             coordinates: [lng, lat],
