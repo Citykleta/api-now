@@ -3,34 +3,29 @@ import {createApp} from '../../utils/app';
 import * as  body from 'koa-bodyparser';
 import {middleware as schema} from 'koa-json-schema';
 import {LocationSearchQueryBody} from '../../utils/interfaces';
+import * as GeoCoder from 'node-geocoder';
 import {HAVANA_BOUNDING_BOX} from '../../utils/constants';
-import * as mapboxSearch from '@mapbox/mapbox-sdk/services/geocoding';
-import conf from '../../conf/index';
 
 const endpoint = async (ctx: Context, next: Function) => {
     // @ts-ignore
     const {query, proximity}: LocationSearchQueryBody = ctx.request.body;
 
-    const geocoding = mapboxSearch({
-        accessToken: conf.mapbox.token
+    const geocoding = GeoCoder({
+        provider: 'openstreetmap'
     });
 
-    const mapboxConfigObject = {
-        query: query,
-        bbox: HAVANA_BOUNDING_BOX,
-        language: ['es', 'en']
+    const queryObject = {
+        city: 'La Habana',
+        state: 'La Habana',
+        country: 'Cuba',
+        countrycodes: 'cu',
+        viewbox: HAVANA_BOUNDING_BOX.join(','),
+        q: query,
+        dedupe:true
     };
 
-    if (proximity) {
-        //@ts-ignore
-        mapboxConfigObject.proximity = [proximity.ln, proximity.lat];
-    }
-
-    const response = await geocoding
-        .forwardGeocode(mapboxConfigObject)
-        .send();
-
-    ctx.body = response.body;
+    ctx.body = await geocoding
+        .geocode(queryObject);
 };
 
 const schemaDefinition = {

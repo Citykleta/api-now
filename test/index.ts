@@ -22,7 +22,7 @@ export const test = (description: string, func: SpecFunction) => harness.test(de
             test(relative(process.cwd(), file), func);
         }
 
-        await harness.report(mochaTapLike);
+        await harness.report();
     } catch (e) {
         error = e;
         console.error(e);

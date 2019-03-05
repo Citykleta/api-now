@@ -33,7 +33,7 @@
     "supertest": "^3.4.2",
     "tap-set-exit": "^1.1.1",
     "typescript": "^3.2.4",
-    "zora": "^3.0.0-2"
+    "zora": "^3.0.1"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
@@ -41,6 +41,7 @@
     "koa": "^2.6.2",
     "koa-bodyparser": "^4.2.1",
     "koa-json-schema": "^3.0.0",
-    "koa-logger": "^3.2.0"
+    "koa-logger": "^3.2.0",
+    "node-geocoder": "^3.22.0"
   }
 }

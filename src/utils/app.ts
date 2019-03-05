@@ -5,7 +5,6 @@ import error from './middlewares/error';
 import * as cors from '@koa/cors';
 import conf from '../conf/index';
 
-
 // process.stdout
 const defaultTransport = (str, args) => {
     console.log(...args);
