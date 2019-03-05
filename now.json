@@ -29,6 +29,14 @@
       ]
     },
     {
+      "src": "/search/reverse",
+      "dest": "src/api/locations/reverse.js",
+      "methods": [
+        "POST",
+        "OPTIONS"
+      ]
+    },
+    {
       "src": "/search/directions",
       "dest": "src/api/directions/search.js",
       "methods": [
