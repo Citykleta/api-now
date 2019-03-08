@@ -34,11 +34,15 @@ const endpoint = async (ctx: Context) => {
         }))
     };
 
-    const response = await service
-        .getDirections(mapboxConfigObject)
-        .send();
+    try {
+        const response = await service
+            .getDirections(mapboxConfigObject)
+            .send();
+        ctx.body = response.body;
+    } catch (e) {
+        ctx.throw(503);
+    }
 
-    ctx.body = response.body;
 };
 
 const schemaDefinition = {

@@ -7,11 +7,11 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node ./test/index.js",
-    "test:ci": "node ./test/index.js | tap-set-exit",
+    "test": "node ./test/index.js | tap-mocha-reporter classic",
     "build": "tsc",
-    "build:dev": "tsc -w",
-    "dev": "tsc -w & nodemon ./scripts/dev-server.js",
+    "build:watch": "npm run build -- -w",
+    "serve:watch": "nodemon ./scripts/dev-server.js",
+    "dev": "npm-run-all -p *:watch",
     "now-build": "npm run build"
   },
   "keywords": [
@@ -30,8 +30,9 @@
     "globby": "^9.0.0",
     "nock": "^10.0.6",
     "nodemon": "^1.18.9",
+    "npm-run-all": "^4.1.5",
     "supertest": "^3.4.2",
-    "tap-set-exit": "^1.1.1",
+    "tap-mocha-reporter": "^3.0.7",
     "typescript": "^3.2.4",
     "zora": "^3.0.1"
   },
