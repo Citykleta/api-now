@@ -72,8 +72,8 @@ const endpoint = async (ctx: Context, next: Function) => {
         dedupe: true
     };
 
-    ctx.body = (await geocoding.geocode(queryObject))
-        .map(format);
+    const response = await geocoding.geocode(queryObject);
+    ctx.body = format(response);
 };
 
 const schemaDefinition = {

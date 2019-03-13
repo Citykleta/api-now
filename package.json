@@ -11,8 +11,7 @@
     "build": "tsc",
     "build:watch": "npm run build -- -w",
     "serve:watch": "nodemon ./scripts/dev-server.js",
-    "dev": "npm-run-all -p *:watch",
-    "now-build": "npm run build"
+    "dev": "npm-run-all -p *:watch"
   },
   "keywords": [
     "citykleta",
