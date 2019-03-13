@@ -6,6 +6,54 @@ import {LocationSearchQueryBody} from '../../utils/interfaces';
 import * as GeoCoder from 'node-geocoder';
 import {HAVANA_BOUNDING_BOX} from '../../utils/constants';
 
+interface NodeGeocoderOutput {
+    latitude: number;
+    longitude: number;
+    formattedAddress: string;
+    country: string;
+    state: string;
+    zipcode: string;
+    streetName: string;
+    streetNumber: string;
+    countryCode: string;
+    neighbourhood: string;
+    provider: string;
+}
+
+export interface Address {
+    number?: string;
+    street?: string;
+    municipality: string;
+}
+
+export interface GeoLocation {
+    lng: number;
+    lat: number;
+    osm_id?: number;
+    name?: string;
+    address?: Address;
+    category?: string; // todo use an enum (restaurant, cafe, etc)
+}
+
+const format = (input: NodeGeocoderOutput[]): GeoLocation[] =>
+    input
+        .filter(i => i.country === 'Cuba' && i.state === 'La Habana')
+        .map(i => {
+            const parts = i.formattedAddress.split(',');
+
+            const address = {
+                number: i.streetNumber,
+                street: i.streetName
+                //todo municipality
+            };
+
+            return {
+                name: parts[0] || address.street || '',
+                lat: i.latitude,
+                lng: i.longitude
+            };
+        });
+
 const endpoint = async (ctx: Context, next: Function) => {
     // @ts-ignore
     const {query, proximity}: LocationSearchQueryBody = ctx.request.body;
@@ -21,11 +69,11 @@ const endpoint = async (ctx: Context, next: Function) => {
         countrycodes: 'cu',
         viewbox: HAVANA_BOUNDING_BOX.join(','),
         q: query,
-        dedupe:true
+        dedupe: true
     };
 
-    ctx.body = await geocoding
-        .geocode(queryObject);
+    ctx.body = (await geocoding.geocode(queryObject))
+        .map(format);
 };
 
 const schemaDefinition = {
