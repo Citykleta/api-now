@@ -23,7 +23,8 @@ interface NodeGeocoderOutput {
 export interface Address {
     number?: string;
     street?: string;
-    municipality: string;
+    municipality?: string;
+    formatted?:string
 }
 
 export interface GeoLocation {
@@ -43,14 +44,16 @@ const format = (input: NodeGeocoderOutput[]): GeoLocation[] =>
 
             const address = {
                 number: i.streetNumber,
-                street: i.streetName
+                street: i.streetName,
+                formatted:i.formattedAddress
                 //todo municipality
             };
 
             return {
                 name: parts[0] || address.street || '',
                 lat: i.latitude,
-                lng: i.longitude
+                lng: i.longitude,
+                address
             };
         });
 
