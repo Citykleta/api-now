@@ -79,6 +79,7 @@ const endpoint = async (ctx: Context, next: Function) => {
     ctx.body = format(response);
 };
 
+
 const schemaDefinition = {
     type: 'object',
     properties: {
