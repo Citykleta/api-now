@@ -1,16 +1,10 @@
 {
   "version": 2,
-  "alias": [
-    "api.citykleta-test.com"
-  ],
+  "alias": "api.citykleta-test.com",
   "name": "citykleta-api",
   "env": {
     "MAPBOX_TOKEN": "@mapbox-token",
-    "MAPBOX_USER": "lorenzofox",
-    "POSTGRES_HOST": "@db-host",
-    "POSTGRES_USER": "@db-user",
-    "POSTGRES_PASSWORD": "@db-password",
-    "POSTGRES_DB": "@db-name",
+    "MAPBOX_USER": "@mapbox-user",
     "CORS_ORIGIN": "https://app.citykleta-test.com"
   },
   "builds": [
