@@ -8,7 +8,7 @@ const endpoint = async (ctx, next) => {
     };
     await next();
 };
-exports.default = app_1.createApp(app => {
+exports.default = app_1.create_app(app => {
     // app.use(schema({
     //     user: {
     //         type: 'number'

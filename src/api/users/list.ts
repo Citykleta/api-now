@@ -1,5 +1,5 @@
 import {Context} from 'koa';
-import {createApp} from '../../utils/app';
+import {create_app} from '../../utils/app';
 
 const endpoint = async (ctx: Context, next: Function) => {
     ctx.response.body = [{
@@ -9,4 +9,4 @@ const endpoint = async (ctx: Context, next: Function) => {
     await next();
 };
 
-export default createApp(app => app.use(endpoint));
+export default create_app(app => app.use(endpoint));

@@ -6,19 +6,19 @@ import * as cors from '@koa/cors';
 import conf from '../conf/index';
 
 // process.stdout
-const defaultTransport = (str, args) => {
+const default_transport = (str, args) => {
     console.log(...args);
 };
 
 // do not log
-const muteTransport = () => {
+const mute_transport = () => {
 };
 
-const applicationLogger = logger(process.env.NODE_ENV === 'test' ? muteTransport : defaultTransport);
+const application_logger = logger(process.env.NODE_ENV === 'test' ? mute_transport : default_transport);
 
-export const createApp = (endpoint: Endpoint) => {
+export const create_app = (endpoint: Endpoint) => {
     const app = new Koa();
-    app.use(applicationLogger);
+    app.use(application_logger);
     app.use(error());
     app.use(cors(conf.cors));
     endpoint(app);

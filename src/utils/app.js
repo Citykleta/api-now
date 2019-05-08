@@ -6,16 +6,16 @@ const error_1 = require("./middlewares/error");
 const cors = require("@koa/cors");
 const index_1 = require("../conf/index");
 // process.stdout
-const defaultTransport = (str, args) => {
+const default_transport = (str, args) => {
     console.log(...args);
 };
 // do not log
-const muteTransport = () => {
+const mute_transport = () => {
 };
-const applicationLogger = logger(process.env.NODE_ENV === 'test' ? muteTransport : defaultTransport);
-exports.createApp = (endpoint) => {
+const application_logger = logger(process.env.NODE_ENV === 'test' ? mute_transport : default_transport);
+exports.create_app = (endpoint) => {
     const app = new Koa();
-    app.use(applicationLogger);
+    app.use(application_logger);
     app.use(error_1.default());
     app.use(cors(index_1.default.cors));
     endpoint(app);

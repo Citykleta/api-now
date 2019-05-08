@@ -8,4 +8,4 @@ const endpoint = async (ctx, next) => {
         }];
     await next();
 };
-exports.default = app_1.createApp(app => app.use(endpoint));
+exports.default = app_1.create_app(app => app.use(endpoint));

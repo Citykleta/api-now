@@ -1,5 +1,5 @@
 import {Context} from 'koa';
-import {createApp} from '../../utils/app';
+import {create_app} from '../../utils/app';
 import * as schema from 'koa-json-schema';
 
 const endpoint = async (ctx: Context, next: Function) => {
@@ -10,7 +10,7 @@ const endpoint = async (ctx: Context, next: Function) => {
     await next();
 };
 
-export default createApp(app => {
+export default create_app(app => {
     // app.use(schema({
     //     user: {
     //         type: 'number'

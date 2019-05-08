@@ -5,7 +5,11 @@
   "env": {
     "MAPBOX_TOKEN": "@mapbox-token",
     "MAPBOX_USER": "@mapbox-user",
-    "CORS_ORIGIN": "https://app.citykleta-test.com"
+    "CORS_ORIGIN": "https://app.citykleta-test.com",
+    "POSTGRES_DB": "@db-name",
+    "POSTGRES_USER": "@db-user",
+    "POSTGRES_PASSWORD": "@db-password",
+    "POSTGRES_HOST": "db-host"
   },
   "builds": [
     {
@@ -15,10 +19,10 @@
   ],
   "routes": [
     {
-      "src": "/search/locations",
+      "src": "/search/poi",
       "dest": "src/api/locations/search.js",
       "methods": [
-        "POST",
+        "GET",
         "OPTIONS"
       ]
     },
@@ -26,7 +30,7 @@
       "src": "/search/reverse",
       "dest": "src/api/locations/reverse.js",
       "methods": [
-        "POST",
+        "GET",
         "OPTIONS"
       ]
     },

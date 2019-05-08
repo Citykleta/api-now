@@ -1,27 +1,29 @@
 import {Context} from 'koa';
-import {createApp} from '../../utils/app';
-import * as  body from 'koa-bodyparser';
+import {create_app} from '../../utils/app';
 import {middleware as schema} from 'koa-json-schema';
-import * as GeoCoder from 'node-geocoder';
+import conf from '../../conf';
+import {Pool} from 'pg';
+import cache from '../../utils/middlewares/cache';
+import {Reverse_search_response_item} from '../../utils/interfaces';
 
-const endpoint = async (ctx: Context, next: Function) => {
+const db_pool = new Pool(conf.db);
+
+const endpoint = db => async (ctx: Context, next: Function) => {
     // @ts-ignore
-    const {lat, lng} = ctx.request.body;
-
-    const geocoding = GeoCoder({
-        provider: 'openstreetmap'
-    });
-
-    const queryObject = {
-        lat,
-        lon: lng
-    };
-
-    ctx.body = await geocoding
-        .reverse(queryObject);
+    const {lng, lat} = ctx.query;
+    const {rows} = await db.query(`
+SELECT 
+    poi_id as id, 
+    name,
+    category,
+    ST_AsGeoJSON(geometry, 6)::json as geometry,
+    distance,
+    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address
+FROM find_suggestions_closed_to(${lng},${lat}) JOIN points_of_interest USING(poi_id);`);
+    ctx.body = <Reverse_search_response_item[]>rows;
 };
 
-const schemaDefinition = {
+const schema_definition = {
     type: 'object',
     properties: {
         lng: {
@@ -34,8 +36,8 @@ const schemaDefinition = {
     required: ['lng', 'lat']
 };
 
-export default createApp(app => {
-    app.use(body());
-    app.use(schema(schemaDefinition));
-    app.use(endpoint);
+export default create_app(app => {
+    app.use(schema(schema_definition, {coerceTypes: true}));
+    app.use(cache());
+    app.use(endpoint(db_pool));
 });

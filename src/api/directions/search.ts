@@ -1,9 +1,9 @@
 import {Context} from 'koa';
-import {createApp} from '../../utils/app';
+import {create_app} from '../../utils/app';
 import * as  body from 'koa-bodyparser';
 import {middleware as schema} from 'koa-json-schema';
-import {DirectionSearchQueryBody} from '../../utils/interfaces';
-import * as directionService from '@mapbox/mapbox-sdk/services/directions';
+import {Direction_search_query_body} from '../../utils/interfaces';
+import * as direction_service from '@mapbox/mapbox-sdk/services/directions';
 import conf from '../../conf/index';
 
 interface WayPoint {
@@ -18,13 +18,13 @@ interface MapboxRequestConfig {
 
 const endpoint = async (ctx: Context) => {
     // @ts-ignore;
-    const {waypoints}: DirectionSearchQueryBody = ctx.request.body;
+    const {waypoints}: Direction_search_query_body = ctx.request.body;
 
-    const service = directionService({
+    const service = direction_service({
         accessToken: conf.mapbox.token
     });
 
-    const mapboxConfigObject: MapboxRequestConfig = {
+    const mapbox_request_config: MapboxRequestConfig = {
         profile: 'cycling',
         // steps: true,
         // @ts-ignore
@@ -36,7 +36,7 @@ const endpoint = async (ctx: Context) => {
 
     try {
         const response = await service
-            .getDirections(mapboxConfigObject)
+            .getDirections(mapbox_request_config)
             .send();
         ctx.body = response.body;
     } catch (e) {
@@ -45,7 +45,7 @@ const endpoint = async (ctx: Context) => {
 
 };
 
-const schemaDefinition = {
+const schema_definition = {
     type: 'object',
     properties: {
         waypoints: {
@@ -68,8 +68,8 @@ const schemaDefinition = {
     required: ['waypoints']
 };
 
-export default createApp(app => {
+export default create_app(app => {
     app.use(body());
-    app.use(schema(schemaDefinition));
+    app.use(schema(schema_definition));
     app.use(endpoint);
 });

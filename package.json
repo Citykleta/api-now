@@ -23,25 +23,24 @@
   "author": "Laurent RENARD",
   "license": "MIT",
   "devDependencies": {
-    "@types/koa": "^2.0.47",
-    "dotenv": "^6.2.0",
-    "find-my-way": "^1.18.0",
-    "globby": "^9.0.0",
+    "@types/koa": "^2.0.48",
+    "find-my-way": "^1.18.1",
+    "globby": "^9.2.0",
     "nock": "^10.0.6",
-    "nodemon": "^1.18.9",
+    "nodemon": "^1.19.0",
     "npm-run-all": "^4.1.5",
     "supertest": "^3.4.2",
-    "tap-mocha-reporter": "^3.0.7",
-    "typescript": "^3.2.4",
+    "tap-mocha-reporter": "^3.0.9",
+    "typescript": "^3.4.5",
     "zora": "^3.0.1"
   },
   "dependencies": {
-    "@koa/cors": "^2.2.2",
+    "@koa/cors": "^2.2.3",
     "@mapbox/mapbox-sdk": "^0.5.0",
-    "koa": "^2.6.2",
+    "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
     "koa-json-schema": "^3.0.0",
     "koa-logger": "^3.2.0",
-    "node-geocoder": "^3.22.0"
+    "pg": "^7.10.0"
   }
 }

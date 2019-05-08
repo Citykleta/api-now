@@ -9,11 +9,30 @@ export interface Coordinates {
     lat: number;
 }
 
-export interface DirectionSearchQueryBody {
+export interface Direction_search_query_body {
     waypoints: Coordinates[];
 }
 
-export interface LocationSearchQueryBody {
+export interface Location_search_query_body {
     query: string;
     proximity?: Coordinates;
+}
+
+export interface Location_search_response_item {
+    id: number;
+    name: string;
+    category?: string;
+    geometry: {
+        type: 'Point',
+        coordinates: [number, number]
+    },
+    address: {
+        number?: string;
+        street?: string;
+        municipality?: string;
+    }
+}
+
+export interface Reverse_search_response_item extends Location_search_response_item{
+    distance:number;
 }
