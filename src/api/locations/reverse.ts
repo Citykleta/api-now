@@ -5,6 +5,7 @@ import conf from '../../conf';
 import {Pool} from 'pg';
 import cache from '../../utils/middlewares/cache';
 import {Reverse_search_response_item} from '../../utils/interfaces';
+import timer from '../../utils/middlewares/server-timing';
 
 const db_pool = new Pool(conf.db);
 
@@ -39,5 +40,6 @@ const schema_definition = {
 export default create_app(app => {
     app.use(schema(schema_definition, {coerceTypes: true}));
     app.use(cache());
+    app.use(timer());
     app.use(endpoint(db_pool));
 });

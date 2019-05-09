@@ -5,6 +5,7 @@ import {middleware as schema} from 'koa-json-schema';
 import {Direction_search_query_body} from '../../utils/interfaces';
 import * as direction_service from '@mapbox/mapbox-sdk/services/directions';
 import conf from '../../conf/index';
+import timer from '../../utils/middlewares/server-timing';
 
 interface WayPoint {
     coordinates: [number, number];
@@ -71,5 +72,6 @@ const schema_definition = {
 export default create_app(app => {
     app.use(body());
     app.use(schema(schema_definition));
+    app.use(timer());
     app.use(endpoint);
 });

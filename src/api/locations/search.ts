@@ -5,6 +5,7 @@ import {Location_search_query_body, Location_search_response_item} from '../../u
 import conf from '../../conf/index';
 import {Pool} from 'pg';
 import cache from '../../utils/middlewares/cache';
+import timer from '../../utils/middlewares/server-timing';
 
 const db_pool = new Pool(conf.db);
 
@@ -14,8 +15,6 @@ const endpoint = db => async (ctx: Context, next: Function) => {
     const query_value = `${query.split(' ')
         .map(v => `${v}:*`)
         .join(' & ')}`;
-
-    console.log(query_value);
 
     const {rows} = await db.query(`
 SELECT 
@@ -43,5 +42,6 @@ const schema_definition = {
 export default create_app(app => {
     app.use(schema(schema_definition));
     app.use(cache());
+    app.use(timer());
     app.use(endpoint(db_pool));
 });
