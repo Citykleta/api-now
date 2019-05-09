@@ -11,7 +11,8 @@
     "build": "tsc",
     "build:watch": "npm run build -- -w",
     "serve:watch": "nodemon ./scripts/dev-server.js",
-    "dev": "npm-run-all -p *:watch"
+    "dev": "npm-run-all -p *:watch",
+    "now-build": "NODE_ENV=production npm run build"
   },
   "keywords": [
     "citykleta",

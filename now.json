@@ -3,7 +3,7 @@
   "alias": "api.citykleta-test.com",
   "name": "citykleta-api",
   "env": {
-    "MAPBOX_TOKEN": "@mapbox-token",
+    "MAPBOX_PRIVATE_TOKEN": "@mapbox-private-token",
     "MAPBOX_USER": "@mapbox-user",
     "CORS_ORIGIN": "https://app.citykleta-test.com",
     "POSTGRES_DB": "@db-name",
