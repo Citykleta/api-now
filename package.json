@@ -24,6 +24,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.0.48",
+    "dotenv": "^8.0.0",
     "find-my-way": "^1.18.1",
     "globby": "^9.2.0",
     "nock": "^10.0.6",

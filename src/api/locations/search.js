@@ -11,14 +11,16 @@ const endpoint = db => async (ctx, next) => {
     const { query } = ctx.query;
     const query_value = `${query.split(' ')
         .map(v => `${v}:*`)
-        .join(' | ')}`;
+        .join(' & ')}`;
+    console.log(query_value);
     const { rows } = await db.query(`
 SELECT 
     poi_id as id, 
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
-    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address
+    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address,
+    description
 FROM find_suggestions('${query_value}') 
 JOIN points_of_interest USING(poi_id);`);
     ctx.body = rows;

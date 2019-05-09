@@ -30,7 +30,8 @@ export interface Location_search_response_item {
         number?: string;
         street?: string;
         municipality?: string;
-    }
+    },
+    description?:string;
 }
 
 export interface Reverse_search_response_item extends Location_search_response_item{
