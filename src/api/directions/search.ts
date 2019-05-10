@@ -1,11 +1,11 @@
 import {Context} from 'koa';
-import {create_app} from '../../utils/app';
+import {create_app} from '../../lib/app';
 import * as  body from 'koa-bodyparser';
 import {middleware as schema} from 'koa-json-schema';
-import {Direction_search_query_body} from '../../utils/interfaces';
+import {Direction_search_query_body} from '../../lib/interfaces';
 import * as direction_service from '@mapbox/mapbox-sdk/services/directions';
 import conf from '../../conf/index';
-import timer from '../../utils/middlewares/server-timing';
+import timer from '../../lib/middlewares/server-timing';
 
 interface WayPoint {
     coordinates: [number, number];

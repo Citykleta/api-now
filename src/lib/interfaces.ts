@@ -1,7 +1,7 @@
 import * as Koa from 'koa';
 
 export interface Endpoint {
-    (app: Koa): any
+    (app: Koa): any;
 }
 
 export interface Coordinates {
@@ -31,9 +31,9 @@ export interface Location_search_response_item {
         street?: string;
         municipality?: string;
     },
-    description?:string;
+    description?: string;
 }
 
-export interface Reverse_search_response_item extends Location_search_response_item{
-    distance:number;
+export interface Reverse_search_response_item extends Location_search_response_item {
+    distance: number;
 }

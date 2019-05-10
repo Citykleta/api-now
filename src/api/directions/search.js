@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = require("../../utils/app");
+const app_1 = require("../../lib/app");
 const body = require("koa-bodyparser");
 const koa_json_schema_1 = require("koa-json-schema");
 const direction_service = require("@mapbox/mapbox-sdk/services/directions");
 const index_1 = require("../../conf/index");
+const server_timing_1 = require("../../lib/middlewares/server-timing");
 const endpoint = async (ctx) => {
     // @ts-ignore;
     const { waypoints } = ctx.request.body;
@@ -55,5 +56,6 @@ const schema_definition = {
 exports.default = app_1.create_app(app => {
     app.use(body());
     app.use(koa_json_schema_1.middleware(schema_definition));
+    app.use(server_timing_1.default());
     app.use(endpoint);
 });

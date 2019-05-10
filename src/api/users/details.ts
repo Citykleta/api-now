@@ -1,5 +1,5 @@
 import {Context} from 'koa';
-import {create_app} from '../../utils/app';
+import {create_app} from '../../lib/app';
 import * as schema from 'koa-json-schema';
 
 const endpoint = async (ctx: Context, next: Function) => {
