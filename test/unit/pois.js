@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const search_1 = require("../../src/api/locations/handlers/search");
+const poi_1 = require("../../src/api/locations/handlers/poi");
 const req = require("supertest");
 const Koa = require("koa");
 const createApp = db => {
     const app = new Koa();
-    app.use(search_1.handler(db));
+    app.use(poi_1.handler(db));
     return app.callback();
 };
 const create_db_stub = (rows) => {
@@ -13,7 +13,7 @@ const create_db_stub = (rows) => {
     let return_value = null;
     return {
         async query(...args) {
-            calls.push(...args);
+            calls.push([...args]);
             return { rows };
         },
         calls
@@ -44,21 +44,24 @@ exports.default = (t) => {
         // GIVEN
         const db = create_db_stub(expected);
         const res = await req(createApp(db))
-            .get('/?query=foo')
+            .get('/?search=foo')
             .expect(200);
         // EXPECT
         t.eq(db.calls.length, 1);
         t.eq(res.body, expected);
-        t.eq(db.calls[0], `
+        t.eq(db.calls[0][0], `
 SELECT 
     poi_id as id, 
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
-    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address,
+    json_build_object('number', house_number, 'street', street_name, 'municipality', municipality_name) as address,
     description
-FROM find_suggestions('foo:*') 
-JOIN points_of_interest USING(poi_id);`);
+FROM find_suggestions($1) 
+JOIN points_of_interest USING(poi_id)
+LIMIT 5
+;`, 'query should match');
+        t.eq(db.calls[0][1], ['foo:*'], 'arguments should match');
     });
     t.test('search points of interest: when a multi words query is passed we should match all of them', async (t) => {
         // EXPECTED
@@ -84,20 +87,23 @@ JOIN points_of_interest USING(poi_id);`);
         // GIVEN
         const db = create_db_stub(expected);
         const res = await req(createApp(db))
-            .get('/?query=foo+bar')
+            .get('/?search=foo+bar')
             .expect(200);
         // EXPECT
         t.eq(db.calls.length, 1);
         t.eq(res.body, expected);
-        t.eq(db.calls[0], `
+        t.eq(db.calls[0][0], `
 SELECT 
     poi_id as id, 
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
-    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address,
+    json_build_object('number', house_number, 'street', street_name, 'municipality', municipality_name) as address,
     description
-FROM find_suggestions('bar:* & foo') 
-JOIN points_of_interest USING(poi_id);`);
+FROM find_suggestions($1) 
+JOIN points_of_interest USING(poi_id)
+LIMIT 5
+;`, 'query should match');
+        t.eq(db.calls[0][1], ['bar:* & foo'], 'arguments should match');
     });
 };

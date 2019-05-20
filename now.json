@@ -19,15 +19,15 @@
   ],
   "routes": [
     {
-      "src": "/search/poi",
-      "dest": "src/api/locations/search.js",
+      "src": "/poi",
+      "dest": "src/api/locations/poi.js",
       "methods": [
         "GET",
         "OPTIONS"
       ]
     },
     {
-      "src": "/search/reverse",
+      "src": "/location",
       "dest": "src/api/locations/reverse.js",
       "methods": [
         "GET",
@@ -35,8 +35,16 @@
       ]
     },
     {
-      "src": "/search/directions",
+      "src": "/direction",
       "dest": "src/api/directions/search.js",
+      "methods": [
+        "POST",
+        "OPTIONS"
+      ]
+    },
+    {
+      "src": "/address",
+      "dest": "src/api/addresses/index.js",
       "methods": [
         "POST",
         "OPTIONS"

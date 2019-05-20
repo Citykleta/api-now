@@ -1,16 +1,29 @@
 "use strict";
+// const municipalities = [
+//     'Habana del Este',
+//     'Boyeros',
+//     'Guanabacoa',
+//     'San Antonio de los Baños',
+//     'Bejucal',
+//     'Diez de Octubre',
+//     'Arroyo Naranjo',
+//     'Cotorro',
+//     'La Lisa',
+//     'Playa',
+//     'San Miguel del Padrón',
+//     'Marianao',
+//     'Plaza de la Revolución',
+//     'Cerro',
+//     'Regla',
+//     'La Habana Vieja',
+//     'Centro Habana'
+// ];
 Object.defineProperty(exports, "__esModule", { value: true });
-const categories = {
-    white_space: 0,
-    punctuator: 1,
-    identifier: 2,
-    keyword: 3
-};
 const qualifiers = [
     'calle',
     'autopista',
     'avenida',
-    'calejon',
+    'callejon',
     'calzada',
     'carretera',
     'ave'
@@ -20,21 +33,20 @@ const keywords = [
     'esq',
     'entre',
     'e',
+    'y',
     'no',
-    'y'
 ];
 const punctuators = [',', '/', '.', '#'];
 const white_space_regexp = /\s/;
-const number_regexp = /^\d+\D*/;
 const create_from_category = category => value => ({
     category,
     value
 });
-const create_white_space_token = create_from_category(categories.white_space);
-const create_punctuator_token = create_from_category(categories.punctuator);
-const create_identifier_token = create_from_category(categories.identifier);
-const create_keyword_token = create_from_category(categories.keyword);
-const tokenize = module.exports.tokenize = function* (candidate) {
+const create_white_space_token = create_from_category(0 /* WHITE_SPACE */);
+const create_punctuator_token = create_from_category(1 /* PUNCTUATOR */);
+const create_identifier_token = create_from_category(2 /* IDENTIFIER */);
+const create_keyword_token = create_from_category(3 /* KEYWORD */);
+function* tokenize(candidate) {
     const source = candidate
         .toLowerCase()
         .trim();
@@ -62,7 +74,8 @@ const tokenize = module.exports.tokenize = function* (candidate) {
     if (buffer.length) {
         yield purge_buffer();
     }
-};
+}
+exports.tokenize = tokenize;
 const lazy_filter = (filterFunc) => function* (iterable) {
     for (const item of iterable) {
         if (filterFunc(item)) {
@@ -70,21 +83,21 @@ const lazy_filter = (filterFunc) => function* (iterable) {
         }
     }
 };
-const filter_out_white_space = lazy_filter(item => item.category !== categories.white_space);
-const stream = iterable => {
+const filter_out_white_space = lazy_filter(item => item.category !== 0 /* WHITE_SPACE */);
+const stream = (iterator) => {
     let buffer = [];
     return {
         [Symbol.iterator]() {
             return this;
         },
         next() {
-            return buffer.length ? buffer.shift() : iterable.next();
+            return buffer.length ? buffer.shift() : iterator.next();
         },
         seeNext(offset = 0) {
             if (buffer.length > offset) {
                 return buffer[offset];
             }
-            buffer.push(iterable.next());
+            buffer.push(iterator.next());
             return this.seeNext(offset);
         },
         eat(number = 1) {
@@ -166,7 +179,7 @@ const parse_e_slash = (token_stream) => {
 };
 const parse_identifier = (token_stream, content = []) => {
     const { value: next, done } = token_stream.seeNext();
-    if (done === true || next.category !== categories.identifier) {
+    if (done === true || next.category !== 2 /* IDENTIFIER */) {
         return create_identifier_node(content);
     }
     token_stream.eat();
@@ -190,8 +203,7 @@ const parse_esq = (token_stream) => {
     }
     return create_corner_node(first);
 };
-exports.parse = function* (source) {
-    const token_stream = stream(filter_out_white_space(tokenize(source)));
+const parse_stream = function* (token_stream) {
     const { value: nextValue, done } = token_stream.seeNext();
     if (done) {
         return;
@@ -217,15 +229,81 @@ exports.parse = function* (source) {
             yield parse_esq(token_stream);
             break;
         default: {
-            if (category === categories.identifier) {
+            if (category === 2 /* IDENTIFIER */) {
                 yield parse_identifier(token_stream);
             }
             else {
-                yield token_stream.next();
+                yield token_stream.next().value;
             }
         }
     }
-    yield* exports.parse(token_stream);
+    yield* parse_stream(token_stream);
 };
-const second_pass = function* (iterable) {
+exports.parse = (source) => parse_stream(stream(filter_out_white_space(tokenize(source))));
+const create_street_like = (node) => {
+    const { value, qualifier } = node;
+    const street = {
+        name: value.join(' ')
+    };
+    if (qualifier) {
+        street.qualifier = qualifier;
+    }
+    return street;
+};
+// use unused punctuation to group items together
+const group = (address_parts) => {
+    const parts = [...address_parts];
+    const groups = [];
+    let sub_group = [];
+    let current;
+    while (current = parts.shift()) {
+        if (current.category === 1 /* PUNCTUATOR */) {
+            if (sub_group.length) {
+                groups.push(sub_group);
+            }
+            sub_group = [];
+        }
+        else {
+            sub_group.push(current);
+        }
+    }
+    if (sub_group.length) {
+        groups.push(sub_group);
+    }
+    return groups;
+};
+// take punctuation into account
+exports.create_address = (candidate) => {
+    const parts = group([...exports.parse(candidate)]);
+    let address = {};
+    for (let i = 0; i < parts.length; i++) {
+        const group = parts[i];
+        for (const p of group) {
+            switch (p.type) {
+                case 'identifier': {
+                    if ((i === 0 && parts.length > 1) || p.qualifier) {
+                        address.street = create_street_like(p);
+                    }
+                    else if (i === parts.length - 1) {
+                        address.municipality = p.value.join(' ');
+                    }
+                    break;
+                }
+                case 'house_number': {
+                    address.number = p.value.value.join(' ');
+                    break;
+                }
+                case 'between': {
+                    const { value } = p;
+                    if (value.length === 2) {
+                        address.between = value.map(create_street_like);
+                    }
+                    break;
+                }
+                default:
+                // unknown node -> do nothing
+            }
+        }
+    }
+    return address;
 };

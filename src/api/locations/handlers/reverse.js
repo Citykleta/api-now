@@ -9,8 +9,10 @@ SELECT
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
-    distance,
-    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address
-FROM find_suggestions_closed_to(${lng},${lat}) JOIN points_of_interest USING(poi_id);`);
+    json_build_object('number', house_number, 'street', street_name, 'municipality', municipality_name) as address,
+    distance
+FROM find_suggestions_closed_to($1, $2) JOIN points_of_interest USING(poi_id)
+LIMIT 5
+;`, [lng, lat]);
     ctx.body = rows;
 };

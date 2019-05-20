@@ -4,17 +4,17 @@ import conf from '../../conf/index';
 import {Pool} from 'pg';
 import cache from '../../lib/middlewares/cache';
 import timer from '../../lib/middlewares/server-timing';
-import {handler} from './handlers/search';
+import {handler} from './handlers/poi';
 
 const db_pool = new Pool(conf.db);
 const schema_definition = {
     type: 'object',
     properties: {
-        query: {
+        search: {
             type: 'string'
         }
     },
-    required: ['query']
+    required: ['search']
 };
 
 export default create_app(app => {

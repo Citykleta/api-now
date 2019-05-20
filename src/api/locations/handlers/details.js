@@ -8,10 +8,10 @@ SELECT
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
-    description,
-    json_build_object('number',"addr:number",'street',"addr:street", 'municipality', "addr:municipality") as address
+    json_build_object('number', house_number, 'street', street_name, 'municipality', municipality_name) as address,
+    description
 FROM points_of_interest
-WHERE poi_id = $1
+WHERE poi_id = $1;
 `, [id]);
     if (!rows.length) {
         ctx.throw(404);
