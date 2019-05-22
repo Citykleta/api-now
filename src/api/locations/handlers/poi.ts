@@ -6,6 +6,7 @@ export const handler = db => async (ctx: Context, next: Function) => {
     const {search}: Location_search_query_body = ctx.query;
     const [last_word, ...others] = search
         .split(' ')
+        .filter(w => w !== '')
         .reverse();
     const query_value = [`${last_word}:*`, ...others].join(' & ');
     const {rows} = await db.query(`

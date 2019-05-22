@@ -18,14 +18,8 @@ const schema_definition = {
     required: ['search']
 };
 exports.default = app_1.create_app(app => {
-    const db = {
-        query(...args) {
-            console.log(...args);
-            return db_pool.query(...args);
-        }
-    };
     app.use(koa_json_schema_1.middleware(schema_definition));
     app.use(cache_1.default());
     app.use(server_timing_1.default());
-    app.use(handler_1.handler(db));
+    app.use(handler_1.handler(db_pool));
 });

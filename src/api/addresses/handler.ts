@@ -36,15 +36,26 @@ WHERE ST_Intersects(s1.geometry, s2.geometry);
 `;
 
 const find_street_in_between_factory = (fn_call_1: string, fn_call_2: string, fn_call_3: string) => `
-
 SELECT DISTINCT ON (st.geometry)
     'street_block' as type,
     st.name as name,
     st.municipality as municipality,
-    json_build_object('type', 'LineString', 'coordinates', ST_AsEncodedPolyline(st.geometry, 5))::json as geometry,
+    json_build_object(
+        'type', 
+        'LineString', 
+        'coordinates', 
+        ST_AsEncodedPolyline(
+            get_street_part(
+                st.geometry, 
+                ST_Intersection(st.geometry, int_1.geometry), 
+                ST_Intersection(st.geometry, int_2.geometry)
+            ),
+            5
+        )
+    )::json as geometry,
     ARRAY[
-        json_build_object('geometry',ST_AsGeoJSON(ST_Intersection(st.geometry, int_1.geometry))::json, 'name', int_1.name)::json,
-        json_build_object('geometry',ST_AsGeoJSON(ST_Intersection(st.geometry, int_2.geometry))::json, 'name', int_2.name)::json
+        json_build_object('type', 'corner', 'geometry', ST_AsGeoJSON(ST_Intersection(st.geometry, int_1.geometry))::json, 'name', int_1.name)::json,
+        json_build_object('type', 'corner', 'geometry', ST_AsGeoJSON(ST_Intersection(st.geometry, int_2.geometry))::json, 'name', int_2.name)::json
     ] as intersections
 FROM 
     (SELECT 
@@ -122,11 +133,7 @@ const find_intersection_within_municipality = (db, street_1: string, street_2: s
 export const handler = db => async (ctx: Context, next: Function) => {
     // @ts-ignore
     const {search} = ctx.query;
-
-    console.log(ctx.query);
-
     const normalized = create_address(search);
-
 
     let fn;
     if (normalized.between) {
@@ -144,7 +151,6 @@ export const handler = db => async (ctx: Context, next: Function) => {
     if (!fn) {
         ctx.throw(422, 'could not understand address');
     }
-
 
     const {rows} = await fn(db, normalized);
     ctx.body = rows;

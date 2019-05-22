@@ -284,7 +284,7 @@ exports.create_address = (candidate) => {
                     if ((i === 0 && parts.length > 1) || p.qualifier) {
                         address.street = create_street_like(p);
                     }
-                    else if (i === parts.length - 1) {
+                    else if (i === parts.length - 1) { // todo add a check of likelihood to be a municipality vs street
                         address.municipality = p.value.join(' ');
                     }
                     break;

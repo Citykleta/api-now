@@ -18,17 +18,8 @@ const schema_definition = {
 };
 
 export default create_app(app => {
-
-    const db = {
-        query(...args) {
-            console.log(...args);
-            return db_pool.query(...args);
-        }
-    };
-
-
     app.use(schema(schema_definition));
     app.use(cache());
     app.use(timer());
-    app.use(handler(db));
+    app.use(handler(db_pool));
 });
