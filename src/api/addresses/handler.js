@@ -1,6 +1,6 @@
-'use strict';
-Object.defineProperty(exports, '__esModule', {value: true});
-const normalize_address_1 = require('../../lib/normalize_address');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const normalize_address_1 = require("../../lib/normalize_address");
 const find_streets_factory = (fn_call) => `
 SELECT DISTINCT ON(streets.geometry)
     'street' as type,
@@ -78,7 +78,7 @@ AND
     ST_Intersects(st.geometry, int_2.geometry)
 `;
 const find_street_in_between = (db, address) => {
-    const {street, between: [int_1, int_2]} = address;
+    const { street, between: [int_1, int_2] } = address;
     return db.query(find_street_in_between_factory('find_streets($1)', 'find_streets($2)', 'find_streets($3)'), [
         format_query_parts(street.name),
         format_query_parts(int_1.name),
@@ -86,7 +86,7 @@ const find_street_in_between = (db, address) => {
     ]);
 };
 const find_street_in_between_within_municipality = (db, address) => {
-    const {street, between: [int_1, int_2], municipality} = address;
+    const { street, between: [int_1, int_2], municipality } = address;
     return db.query(find_street_in_between_factory('find_streets_within_municipality($1, $4)', 'find_streets_within_municipality($2, $4)', 'find_streets_within_municipality($3, $4)'), [
         format_query_parts(street.name),
         format_query_parts(int_1.name),
@@ -95,20 +95,21 @@ const find_street_in_between_within_municipality = (db, address) => {
     ]);
 };
 const format_query_parts = (q) => q.split(' ').join(' & ');
-const find_streets = (db, {street}) => db.query(find_streets_factory('find_streets($1)'), [format_query_parts(street.name)]);
-const find_streets_within_municipality = (db, {street, municipality}) => db.query(find_streets_factory('find_streets_within_municipality($1, $2)'), [format_query_parts(street.name), format_query_parts(municipality)]);
+const find_streets = (db, { street }) => db.query(find_streets_factory('find_streets($1)'), [format_query_parts(street.name)]);
+const find_streets_within_municipality = (db, { street, municipality }) => db.query(find_streets_factory('find_streets_within_municipality($1, $2)'), [format_query_parts(street.name), format_query_parts(municipality)]);
 const find_intersection = (db, street_1, street_2) => db.query(find_intersection_factory('find_streets($1)', 'find_streets($2)'), [format_query_parts(street_1), format_query_parts(street_2)]);
 const find_intersection_within_municipality = (db, street_1, street_2, municipality) => db.query(find_intersection_factory('find_streets_within_municipality($1, $3)', 'find_streets_within_municipality($2, $3)'), [format_query_parts(street_1), format_query_parts(street_2), format_query_parts(municipality)]);
 exports.handler = db => async (ctx, next) => {
     // @ts-ignore
-    const {search} = ctx.query;
+    const { search } = ctx.query;
     const normalized = normalize_address_1.create_address(search);
     let fn;
-    if (normalized.between && normalized.street) {
+    if (normalized.between) {
         fn = normalized.municipality ?
             find_street_in_between_within_municipality :
             find_street_in_between;
-    } else if (normalized.street) {
+    }
+    else if (normalized.street) {
         fn = normalized.municipality ?
             find_streets_within_municipality :
             find_streets;
@@ -117,6 +118,6 @@ exports.handler = db => async (ctx, next) => {
     if (!fn) {
         ctx.throw(422, 'could not understand address');
     }
-    const {rows} = await fn(db, normalized);
+    const { rows } = await fn(db, normalized);
     ctx.body = rows;
 };
