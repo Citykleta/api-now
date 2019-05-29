@@ -37,6 +37,7 @@
     "zora": "^3.0.1"
   },
   "dependencies": {
+    "@citykleta/habana-address-normalizer": "^0.1.0",
     "@koa/cors": "^3.0.0",
     "@mapbox/mapbox-sdk": "^0.6.0",
     "koa": "^2.7.0",

@@ -1,5 +1,5 @@
 import {Context} from 'koa';
-import {Normalized_address, create_address} from '../../lib/normalize_address';
+import {NormalizedAddress, create_address} from '@citykleta/habana-address-normalizer';
 
 const find_streets_factory = (fn_call: string) => `
 SELECT DISTINCT ON(streets.geometry)
@@ -12,7 +12,7 @@ JOIN streets USING (street_id);
 `;
 
 const find_intersection_factory = (fn_call_1: string, fn_call_2: string) => `
-SELECT DISTINCT ON (geometry)
+SELECT DISTINCT ON (ST_Intersection(s1.geometry, s2.geometry))
     'corner' as type,
     ST_AsGeoJSON(ST_Intersection(s1.geometry, s2.geometry))::json as geometry,
     ARRAY[ s1.name, s2.name] as streets,
@@ -80,7 +80,7 @@ AND
     ST_Intersects(st.geometry, int_2.geometry)
 `;
 
-const find_street_in_between = (db, address: Normalized_address) => {
+const find_street_in_between = (db, address: NormalizedAddress) => {
     const {street, between: [int_1, int_2]} = address;
     return db.query(
         find_street_in_between_factory(
@@ -94,7 +94,7 @@ const find_street_in_between = (db, address: Normalized_address) => {
         ]);
 };
 
-const find_street_in_between_within_municipality = (db, address: Normalized_address) => {
+const find_street_in_between_within_municipality = (db, address: NormalizedAddress) => {
     const {street, between: [int_1, int_2], municipality} = address;
     return db.query(
         find_street_in_between_factory(
@@ -113,22 +113,28 @@ const find_street_in_between_within_municipality = (db, address: Normalized_addr
 
 const format_query_parts = (q: string): string => q.split(' ').join(' & ');
 
-const find_streets = (db, {street}: Normalized_address): Promise<any> => db.query(find_streets_factory('find_streets($1)'), [format_query_parts(street.name)]);
+const find_streets = (db, {street}: NormalizedAddress): Promise<any> => db.query(find_streets_factory('find_streets($1)'), [format_query_parts(street.name)]);
 
-const find_streets_within_municipality = (db, {street, municipality}: Normalized_address): Promise<any> => db.query(
+const find_streets_within_municipality = (db, {street, municipality}: NormalizedAddress): Promise<any> => db.query(
     find_streets_factory('find_streets_within_municipality($1, $2)'),
     [format_query_parts(street.name), format_query_parts(municipality)]
 );
 
-const find_intersection = (db, street_1: string, street_2: string): Promise<any> => db.query(
-    find_intersection_factory('find_streets($1)', 'find_streets($2)'),
-    [format_query_parts(street_1), format_query_parts(street_2)]
-);
+const find_intersection = (db, {corner}): Promise<any> => {
+    const [street_1, street_2] = corner;
+    return db.query(
+        find_intersection_factory('find_streets($1)', 'find_streets($2)'),
+        [format_query_parts(street_1.name), format_query_parts(street_2.name)]
+    );
+};
 
-const find_intersection_within_municipality = (db, street_1: string, street_2: string, municipality: string): Promise<any> => db.query(
-    find_intersection_factory('find_streets_within_municipality($1, $3)', 'find_streets_within_municipality($2, $3)'),
-    [format_query_parts(street_1), format_query_parts(street_2), format_query_parts(municipality)]
-);
+const find_intersection_within_municipality = (db, {municipality, corner}): Promise<any> => {
+    const [street_1, street_2] = corner;
+    return db.query(
+        find_intersection_factory('find_streets_within_municipality($1, $3)', 'find_streets_within_municipality($2, $3)'),
+        [format_query_parts(street_1.name), format_query_parts(street_2.name), format_query_parts(municipality)]
+    );
+};
 
 export const handler = db => async (ctx: Context, next: Function) => {
     // @ts-ignore
@@ -136,7 +142,12 @@ export const handler = db => async (ctx: Context, next: Function) => {
     const normalized = create_address(search);
 
     let fn;
-    if (normalized.between) {
+
+    if (normalized.corner) {
+        fn = normalized.municipality ?
+            find_intersection_within_municipality :
+            find_intersection;
+    } else if (normalized.between) {
         fn = normalized.municipality ?
             find_street_in_between_within_municipality :
             find_street_in_between;

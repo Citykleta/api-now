@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const normalize_address_1 = require("../../lib/normalize_address");
+const habana_address_normalizer_1 = require("@citykleta/habana-address-normalizer");
 const find_streets_factory = (fn_call) => `
 SELECT DISTINCT ON(streets.geometry)
     'street' as type,
@@ -11,7 +11,7 @@ FROM ${fn_call}
 JOIN streets USING (street_id);
 `;
 const find_intersection_factory = (fn_call_1, fn_call_2) => `
-SELECT DISTINCT ON (geometry)
+SELECT DISTINCT ON (ST_Intersection(s1.geometry, s2.geometry))
     'corner' as type,
     ST_AsGeoJSON(ST_Intersection(s1.geometry, s2.geometry))::json as geometry,
     ARRAY[ s1.name, s2.name] as streets,
@@ -97,14 +97,25 @@ const find_street_in_between_within_municipality = (db, address) => {
 const format_query_parts = (q) => q.split(' ').join(' & ');
 const find_streets = (db, { street }) => db.query(find_streets_factory('find_streets($1)'), [format_query_parts(street.name)]);
 const find_streets_within_municipality = (db, { street, municipality }) => db.query(find_streets_factory('find_streets_within_municipality($1, $2)'), [format_query_parts(street.name), format_query_parts(municipality)]);
-const find_intersection = (db, street_1, street_2) => db.query(find_intersection_factory('find_streets($1)', 'find_streets($2)'), [format_query_parts(street_1), format_query_parts(street_2)]);
-const find_intersection_within_municipality = (db, street_1, street_2, municipality) => db.query(find_intersection_factory('find_streets_within_municipality($1, $3)', 'find_streets_within_municipality($2, $3)'), [format_query_parts(street_1), format_query_parts(street_2), format_query_parts(municipality)]);
+const find_intersection = (db, { corner }) => {
+    const [street_1, street_2] = corner;
+    return db.query(find_intersection_factory('find_streets($1)', 'find_streets($2)'), [format_query_parts(street_1.name), format_query_parts(street_2.name)]);
+};
+const find_intersection_within_municipality = (db, { municipality, corner }) => {
+    const [street_1, street_2] = corner;
+    return db.query(find_intersection_factory('find_streets_within_municipality($1, $3)', 'find_streets_within_municipality($2, $3)'), [format_query_parts(street_1.name), format_query_parts(street_2.name), format_query_parts(municipality)]);
+};
 exports.handler = db => async (ctx, next) => {
     // @ts-ignore
     const { search } = ctx.query;
-    const normalized = normalize_address_1.create_address(search);
+    const normalized = habana_address_normalizer_1.create_address(search);
     let fn;
-    if (normalized.between) {
+    if (normalized.corner) {
+        fn = normalized.municipality ?
+            find_intersection_within_municipality :
+            find_intersection;
+    }
+    else if (normalized.between) {
         fn = normalized.municipality ?
             find_street_in_between_within_municipality :
             find_street_in_between;
@@ -114,7 +125,6 @@ exports.handler = db => async (ctx, next) => {
             find_streets_within_municipality :
             find_streets;
     }
-    console.log(normalized);
     if (!fn) {
         ctx.throw(422, 'could not understand address');
     }

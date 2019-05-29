@@ -46,7 +46,7 @@
       "src": "/address",
       "dest": "src/api/addresses/index.js",
       "methods": [
-        "POST",
+        "GET",
         "OPTIONS"
       ]
     }

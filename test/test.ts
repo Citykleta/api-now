@@ -1,4 +1,4 @@
-import {create_address, parse} from '../src/lib/normalize_address';
+import {create_address} from '../src/lib/normalize_address';
 import {restaurants} from './fixture/restaurant';
 
 const test_values = restaurants.slice(0, 10);
