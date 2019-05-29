@@ -125,6 +125,7 @@ exports.handler = db => async (ctx, next) => {
             find_streets_within_municipality :
             find_streets;
     }
+    console.log(normalized);
     if (!fn) {
         ctx.throw(422, 'could not understand address');
     }
