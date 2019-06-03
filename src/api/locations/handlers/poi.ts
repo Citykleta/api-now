@@ -11,7 +11,7 @@ export const handler = db => async (ctx: Context, next: Function) => {
     const query_value = [`${last_word}:*`, ...others].join(' & ');
     const {rows} = await db.query(`
 SELECT 
-    poi_id as id, 
+    poi_id as id,
     'point_of_interest' as type,
     name,
     category,

@@ -51,7 +51,8 @@ exports.default = (t) => {
         t.eq(res.body, expected);
         t.eq(db.calls[0][0], `
 SELECT 
-    poi_id as id, 
+    poi_id as id,
+    'point_of_interest' as type,
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
@@ -94,7 +95,8 @@ LIMIT 5
         t.eq(res.body, expected);
         t.eq(db.calls[0][0], `
 SELECT 
-    poi_id as id, 
+    poi_id as id,
+    'point_of_interest' as type,
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,
