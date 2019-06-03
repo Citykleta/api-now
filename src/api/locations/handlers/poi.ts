@@ -12,6 +12,7 @@ export const handler = db => async (ctx: Context, next: Function) => {
     const {rows} = await db.query(`
 SELECT 
     poi_id as id, 
+    'point_of_interest' as type,
     name,
     category,
     ST_AsGeoJSON(geometry, 6)::json as geometry,

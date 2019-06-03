@@ -157,8 +157,6 @@ export const handler = db => async (ctx: Context, next: Function) => {
             find_streets;
     }
 
-    console.log(normalized);
-
     if (!fn) {
         ctx.throw(422, 'could not understand address');
     }
