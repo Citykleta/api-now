@@ -13,14 +13,14 @@
   },
   "builds": [
     {
-      "src": "src/api/**/*.js",
+      "src": "src/api/**/*.ts",
       "use": "@now/node"
     }
   ],
   "routes": [
     {
       "src": "/poi",
-      "dest": "src/api/locations/poi.js",
+      "dest": "src/api/locations/poi.ts",
       "methods": [
         "GET",
         "OPTIONS"
@@ -28,7 +28,7 @@
     },
     {
       "src": "/location",
-      "dest": "src/api/locations/reverse.js",
+      "dest": "src/api/locations/reverse.ts",
       "methods": [
         "GET",
         "OPTIONS"
@@ -36,7 +36,7 @@
     },
     {
       "src": "/direction",
-      "dest": "src/api/directions/search.js",
+      "dest": "src/api/directions/search.ts",
       "methods": [
         "POST",
         "OPTIONS"
@@ -44,7 +44,7 @@
     },
     {
       "src": "/address",
-      "dest": "src/api/addresses/index.js",
+      "dest": "src/api/addresses/index.ts",
       "methods": [
         "GET",
         "OPTIONS"
