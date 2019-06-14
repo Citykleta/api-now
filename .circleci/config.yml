@@ -5,17 +5,18 @@
 version: 2.1
 jobs:
   set_up_db:
-    machine: true
-    environment:
-      - POSTGRES_USER=tester
-      - POSTGRES_DB=test
-      - POSTGRES_PASSWORD=secrettest
+    machine:
+      - docker_layer_caching: true
+#    environment:
+#      - POSTGRES_USER=tester
+#      - POSTGRES_DB=test
+#      - POSTGRES_PASSWORD=secrettest
     steps:
       - checkout
       - run:
           name: start cutom db image
           command: |
-            docker run --rm --name db -p 5432:5432 citykleta/db:latest
+            docker run --rm --name --env-file $PWD/test/test.env db -p 5432:5432 citykleta/db:latest
       - run:
           name: import fixture
           command: |
@@ -25,13 +26,6 @@ workflows:
   build_and_test:
     jobs:
       - set_up_db
-
-
-
-
-
-
-
 
 #jobs:
 #  build:
