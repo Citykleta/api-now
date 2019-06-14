@@ -11,7 +11,7 @@ jobs:
       - run:
           name: start cutom db image
           command: |
-            docker run --rm --name db --env-file $PWD/test/test.env -p 5432:5432 citykleta/db:latest
+            docker run -d --name db --env-file $PWD/test/test.env -p 5432:5432 citykleta/db:latest
       - run:
           name: import fixture file into container
           command: |
