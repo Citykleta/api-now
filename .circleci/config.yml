@@ -7,10 +7,6 @@ jobs:
   set_up_db:
     machine:
       - docker_layer_caching: true
-#    environment:
-#      - POSTGRES_USER=tester
-#      - POSTGRES_DB=test
-#      - POSTGRES_PASSWORD=secrettest
     steps:
       - checkout
       - run:
