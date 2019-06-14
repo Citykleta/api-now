@@ -5,7 +5,7 @@
 version: 2.1
 jobs:
   set_up_db:
-    machine: circleci/classic
+    machine: true
     environment:
       - POSTGRES_USER=tester
       - POSTGRES_DB=test
