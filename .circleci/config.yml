@@ -2,32 +2,67 @@
 #
 # Check https://circleci.com/docs/2.0/language-javascript/ for more details
 #
-version: 2
+version: 2.1
 jobs:
-  build:
-    docker:
-      - image: circleci/node:latest
-      - image: citykleta/db:latest
-        environment:
-          - POSTGRES_USER: tester
-          - POSTGRES_DB: test
-          - POSTGRES_PASSWORD: secrettest
+  set_up_db:
+    machine: circleci/classic
+    environment:
+      - POSTGRES_USER=tester
+      - POSTGRES_DB=test
+      - POSTGRES_PASSWORD=secrettest
     steps:
       - checkout
+      - run:
+          name: start cutom db image
+          command: |
+            docker run --rm --name db -p 5432:5432 citykleta/db:latest
+      - run:
+          name: import fixture
+          command: |
+            docker cp $PWD/test/fixture/osm_data.osm db:/osm-data/fixture.osm
+workflows:
+  version: 2
+    test:
+      jobs:
+        build:
+          requires:
+            - set_up_db
+          environment:
+            - POSTGRES_USER=tester
+            - POSTGRES_DB=test
+            - POSTGRES_PASSWORD=secrettest
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
 
-      - run: npm install && npm run build
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: npm run test
+
+
+
+#jobs:
+#  build:
+#    docker:
+#      - image: circleci/node:latest
+#      - image: citykleta/db:latest
+#        environment:
+#          - POSTGRES_USER: tester
+#          - POSTGRES_DB: test
+#          - POSTGRES_PASSWORD: secrettest
+#    steps:
+#      - checkout
+#
+#      # Download and cache dependencies
+#      - restore_cache:
+#          keys:
+#            - v1-dependencies-{{ checksum "package.json" }}
+#            # fallback to using the latest cache if no exact match is found
+#            - v1-dependencies-
+#
+#      - run: npm install && npm run build
+#
+#      - save_cache:
+#          paths:
+#            - node_modules
+#          key: v1-dependencies-{{ checksum "package.json" }}
+#
+#      # run tests!
+#      - run: npm run test
