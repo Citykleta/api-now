@@ -6,31 +6,29 @@ version: 2
 jobs:
   build:
     docker:
-    - image: circleci/node:latest
-#    - image: citykleta/db:latest
-#      environment:
-#        - POSTGRES_USER=test_user
-#        - POSTGRES_PASSWORD=test_pass
-#        - POSTGRES_DB=test
+      - image: circleci/node:latest
+      - image: citykleta/db:latest
     steps:
-    - checkout
+      - checkout
 
-    # Download and cache dependencies
-    - restore_cache:
-        keys:
-        - v1-dependencies-{{ checksum "package.json" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
 
-    - run: npm install
+      - run: npm install && npm run build
 
-    - run: npm run build
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-    - save_cache:
-        paths:
-        - node_modules
-        key: v1-dependencies-{{ checksum "package.json" }}
-
-    # run tests!
-    - run: npm run test
+      # run tests!
+      - run: npm run test
+    environment:
+      POSTGRES_USER=tester
+      POSTGRES_DB=test
+      POSTGRES_PASSWORD=secrettest
 

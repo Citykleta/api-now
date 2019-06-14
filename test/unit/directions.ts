@@ -5,19 +5,6 @@ import * as nock from 'nock';
 import conf from '../../src/conf/index';
 
 export default (t: Assert) => {
-    // todo move to integration tests
-    // t.test('invalid waypoints, it needs at least two points', async t => {
-    //     const res = await req(searchApp)
-    //         .post('/')
-    //         .send({
-    //             waypoints: [{
-    //                 lng: 1234,
-    //                 lat: 23445
-    //             }]
-    //         })
-    //         .expect(422);
-    // });
-
     t.test('forward valid query to mapbox with cycling profile', async t => {
         const expected = {
             'routes': [{

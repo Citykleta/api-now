@@ -1,6 +1,6 @@
-import {resolve, relative} from 'path';
+import {relative, resolve} from 'path';
 import * as globby from 'globby';
-import {createHarness, SpecFunction, mochaTapLike} from 'zora';
+import {createHarness, mochaTapLike, SpecFunction} from 'zora';
 import * as dotenv from 'dotenv';
 
 dotenv.config({
