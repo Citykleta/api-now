@@ -13,9 +13,13 @@ jobs:
           command: |
             docker run --rm --name db --env-file $PWD/test/test.env -p 5432:5432 citykleta/db:latest
       - run:
-          name: import fixture
+          name: import fixture file into container
           command: |
             docker cp $PWD/test/fixture/osm_data.osm db:/osm-data/fixture.osm
+      - run:
+          name: import data into the db
+          command: |
+            docker exec db "import_data osm-data/fixture.osm"
 workflows:
   version: 2
   build_and_test:
