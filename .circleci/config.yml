@@ -4,7 +4,7 @@
 #
 version: 2
 jobs:
-  build:
+  test:
     docker:
       - image: circleci/node:latest
       - image: citykleta/db:latest
@@ -28,7 +28,7 @@ jobs:
       # run tests!
       - run: npm run test
     environment:
-      POSTGRES_USER: tester
-      POSTGRES_DB: test
-      POSTGRES_PASSWORD: secrettest
-
+      - NODE_ENV: test
+      - POSTGRES_USER: tester
+      - POSTGRES_DB: test
+      - POSTGRES_PASSWORD: secrettest
