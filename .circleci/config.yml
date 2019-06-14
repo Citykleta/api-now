@@ -5,8 +5,7 @@
 version: 2.1
 jobs:
   set_up_db:
-    machine:
-      - docker_layer_caching: true
+    machine: true
     steps:
       - checkout
       - run:
