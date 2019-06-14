@@ -19,7 +19,7 @@ jobs:
       - run:
           name: import data into the db
           command: |
-            docker exec db "import_data osm-data/fixture.osm"
+            docker exec db "ls /osm-data"
 workflows:
   version: 2
   build_and_test:
