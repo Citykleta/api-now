@@ -20,17 +20,12 @@ jobs:
           name: import fixture
           command: |
             docker cp $PWD/test/fixture/osm_data.osm db:/osm-data/fixture.osm
-#workflows:
-#  version: 2
-#  test:
-#    jobs:
-#      build:
-#        requires:
-#          - set_up_db
-#        environment:
-#          - POSTGRES_USER=tester
-#          - POSTGRES_DB=test
-#          - POSTGRES_PASSWORD=secrettest
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - set_up_db
+
 
 
 
