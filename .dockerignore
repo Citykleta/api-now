@@ -1,0 +1,4 @@
+.circleci
+db
+node_modules
+scripts
