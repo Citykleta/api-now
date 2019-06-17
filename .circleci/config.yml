@@ -4,7 +4,7 @@
 #
 #version: 2.1
 jobs:
-  set_up_db:
+  build:
     machine: true
     steps:
       - checkout
