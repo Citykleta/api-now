@@ -37,6 +37,7 @@ jobs:
             - PGHOST: localhost
             - PGPASSWORD: secrettest
             - PGDATABASE: test
+            - PGDB: test
 workflows:
   version: 2
   build_and_test:
