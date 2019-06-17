@@ -9,14 +9,14 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build app image
-          command: |
-            docker build -t app .
-      - run:
           name: start cutom db image
           environment:
           command: |
             docker run -d --name db --env-file $PWD/test/test.env -p 5432:5432 -v $PWD/test/fixture:/osm-data citykleta/db:latest
+      - run:
+          name: Build app image
+          command: |
+            docker build -t app .
       - run:
           name: check connectiviy
           command: |
