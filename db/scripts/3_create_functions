@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e;
+
+# execute as current user
+export PGUSER="$POSTGRES_USER";
+
+# in a non docker context you might have to set some of the following env var in the bash session which executes the script
+# (normally provided by the parent docker image)
+# export POSTGRES_USER=docker;
+# export POSTGRES_DB=test;
+# export PGPASSWORD=somesecret;
+# export PGHOST=localhost;
+# export PGPORT=5432;
+
+# loop over sql files
+for f in functions/*.sql; do
+    echo "Executing function file $f";
+    psql -w --dbname=${POSTGRES_DB} -f ${f};
+done;
