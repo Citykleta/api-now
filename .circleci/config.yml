@@ -33,6 +33,8 @@ jobs:
             - POSTGRES_USER: tester
             - POSTGRES_DB: test
             - POSTGRES_PASSWORD: secrettest
+            - PGPORT: 5432
+            - PGHOST: localhost
 workflows:
   version: 2
   build_and_test:
