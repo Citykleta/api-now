@@ -35,6 +35,8 @@ jobs:
             - POSTGRES_PASSWORD: secrettest
             - PGPORT: 5432
             - PGHOST: localhost
+            - PGPASSWORD: secrettest
+            - PGDATABASE: test
 workflows:
   version: 2
   build_and_test:
