@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+set -e;
+
+# execute as current user
+export PGUSER="$POSTGRES_USER";
+export CACHE="${CACHE_SIZE:-100}";
+
+if [ ! -f "$1" ]; then
+    echo >&2 "you must provide a valid filename to the data importer"
+    exit 1
+fi
+
+echo "importing osm file $1 into database $POSTGRES_DB";
+
+osm2pgsql $1 --create \
+--database ${POSTGRES_DB} \
+--slim \
+--create \
+--hstore-all \
+--latlong \
+--cache ${CACHE}
+
+echo "loading data into database schema"
+for f in import/*.sql; do
+    echo "Executing import file $f";
+    psql -w --dbname=${POSTGRES_DB} -f ${f};
+done;
