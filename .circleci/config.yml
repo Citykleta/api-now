@@ -9,6 +9,17 @@ jobs:
     steps:
       - checkout
       - run:
+        name: Add nvm into the bash
+        command: |
+          echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+          echo ' [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run:
+          name: nvm install node 10
+          command: |
+              nvm install v10
+              node -v
+              nvm alias default v10
+      - run:
           name: start cutom db image
           command: |
             docker run -d --name db --env-file $PWD/test/test.env -p 5432:5432 -v $PWD/test/fixture:/osm-data citykleta/db:latest
