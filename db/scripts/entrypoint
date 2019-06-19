@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+#execute each script
+create_extensions
+create_schema
+create_functions
+
+if ls osm-data/*.osm 1> /dev/null 2>&1; then
+    pattern="osm-data/*.osm";
+    files=( $pattern );
+    first=${files[0]};
+    import_data $first;
+else
+    echo "Could not find any osm data file";
+fi
+
+
+
+

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Perform all actions as $POSTGRES_USER
+export PGUSER="$POSTGRES_USER"
+
+# Load PostGIS into $POSTGRES_DB
+echo "Loading PostGIS extension into $POSTGRES_DB"
+psql -w --dbname="$POSTGRES_DB" <<EOF
+    CREATE EXTENSION IF NOT EXISTS postgis;
+    CREATE EXTENSION IF NOT EXISTS hstore;
+    CREATE EXTENSION IF NOT EXISTS pg_trgm;
+    CREATE EXTENSION IF NOT EXISTS unaccent;
+EOF
