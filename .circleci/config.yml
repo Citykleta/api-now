@@ -24,7 +24,4 @@ jobs:
       - run:
           name: Test app
           command: |
-            docker run app npm test
-          environment:
-            - PGHOST: 127.0.0.1
-            - PGPORT: 5432
+            docker run -e PGHOST=127.0.0.1 -e PGPORT=5432 app npm test

@@ -3,12 +3,11 @@ import * as globby from 'globby';
 import {createHarness, mochaTapLike, SpecFunction} from 'zora';
 import * as dotenv from 'dotenv';
 
-console.log(process.env);
-
-
 dotenv.config({
     path: './test/test.env'
 });
+
+console.log(process.env);
 
 export const harness = createHarness();
 export const test = (description: string, func: SpecFunction) => harness.test(description, func);
