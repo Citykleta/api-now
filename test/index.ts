@@ -2,6 +2,10 @@ import {relative, resolve} from 'path';
 import * as globby from 'globby';
 import {createHarness, mochaTapLike, SpecFunction} from 'zora';
 import * as dotenv from 'dotenv';
+import conf from '../src/conf/index';
+import {Pool} from 'pg';
+
+const db_pool = new Pool(conf.db);
 
 dotenv.config({
     path: './test/test.env'
@@ -13,6 +17,10 @@ export const test = (description: string, func: SpecFunction) => harness.test(de
 (async () => {
     let error = null;
     try {
+
+        console.log(await db_pool.query(`select now()`));
+
+
         const path = await globby('./test/{unit,int}/*.js');
         const absolutePath = path
             .map(relPath => resolve(process.cwd(), relPath));
