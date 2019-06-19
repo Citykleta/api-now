@@ -10,7 +10,6 @@ jobs:
       - checkout
       - run:
           name: start cutom db image
-          environment:
           command: |
             docker run -d --name db --env-file $PWD/test/test.env -p 5432:5432 -v $PWD/test/fixture:/osm-data citykleta/db:latest
       - run:
@@ -24,4 +23,4 @@ jobs:
       - run:
           name: Test app
           command: |
-            docker run -e PGHOST=127.0.0.1 -e PGPORT=5432 app npm test
+            docker run -e PGHOST=localhost -e PGPORT=5432 app npm test
