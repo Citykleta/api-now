@@ -19,7 +19,7 @@ jobs:
       - run:
           name: Build app
           command: |
-            npm run install && npm run build
+            npm install && npm run build
       - run:
           name: test app
           command: |
