@@ -6,7 +6,10 @@ import cache from '../../lib/middlewares/cache';
 import timer from '../../lib/middlewares/server-timing';
 import {handler} from './handlers/poi';
 
+console.log(conf.db);
+
 const db_pool = new Pool(conf.db);
+
 const schema_definition = {
     type: 'object',
     properties: {
