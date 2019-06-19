@@ -20,7 +20,7 @@ jobs:
       - run:
           name: check connectiviy
           command: |
-            sleep 5s && docker logs db
+            sleep 5s && docker exec -e PGUSER=tester -e PGDATABASE=test db psql -c 'select now();'
       - run:
           name: Test app
           command: |

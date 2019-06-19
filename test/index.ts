@@ -7,8 +7,6 @@ dotenv.config({
     path: './test/test.env'
 });
 
-console.log(process.env);
-
 export const harness = createHarness();
 export const test = (description: string, func: SpecFunction) => harness.test(description, func);
 
