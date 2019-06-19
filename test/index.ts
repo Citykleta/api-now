@@ -13,7 +13,6 @@ export const test = (description: string, func: SpecFunction) => harness.test(de
 (async () => {
     let error = null;
     try {
-
         const path = await globby('./test/{unit,int}/*.js');
         const absolutePath = path
             .map(relPath => resolve(process.cwd(), relPath));
