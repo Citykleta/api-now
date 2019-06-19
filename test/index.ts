@@ -3,6 +3,9 @@ import * as globby from 'globby';
 import {createHarness, mochaTapLike, SpecFunction} from 'zora';
 import * as dotenv from 'dotenv';
 
+console.log(process.env);
+
+
 dotenv.config({
     path: './test/test.env'
 });
