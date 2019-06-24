@@ -12,9 +12,9 @@ jobs:
       - run:
           name: nvm install node 10
           command: |
-              nvm install v10
-              node -v
-              nvm alias default v10
+            nvm install v10
+            node -v
+            nvm alias default v10
       - run:
           name: start cutom db image
           command: |
