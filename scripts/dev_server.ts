@@ -4,7 +4,8 @@ import {relative, resolve} from 'path';
 
 const {routes} = now;
 const router = routes.map(r => {
-    const handler1 = relative(__dirname, resolve(process.cwd(), r.dest));
+    const handler1 = relative(__dirname, resolve(process.cwd(), r.dest)).replace('.ts', '.js');
+    console.log(handler1);
     return Object.assign(r, {regexp: new RegExp(r.src), handler: require(handler1.replace(/\?(.)*$/, '')).default});
 });
 

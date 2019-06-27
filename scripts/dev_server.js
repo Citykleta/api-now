@@ -5,7 +5,8 @@ const now = require("../now.json");
 const path_1 = require("path");
 const { routes } = now;
 const router = routes.map(r => {
-    const handler1 = path_1.relative(__dirname, path_1.resolve(process.cwd(), r.dest));
+    const handler1 = path_1.relative(__dirname, path_1.resolve(process.cwd(), r.dest)).replace('.ts', '.js');
+    console.log(handler1);
     return Object.assign(r, { regexp: new RegExp(r.src), handler: require(handler1.replace(/\?(.)*$/, '')).default });
 });
 const handler = (req, res) => {
