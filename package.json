@@ -8,10 +8,12 @@
   },
   "scripts": {
     "test": "node ./test/index.js | tap-mocha-reporter classic",
+    "test:coverage": "c8 -r html npm test",
     "build": "tsc",
     "build:watch": "npm run build -- -w",
     "serve:watch": "nodemon ./scripts/dev-server.js",
     "dev": "npm-run-all -p *:watch",
+    "build:media": "node ./scripts/get_municipalities_as_GeoJson.js | tee ./media/havana.json | geojson-to-svg > ./media/havana.svg",
     "now-build": "NODE_ENV=production npm run build"
   },
   "keywords": [
@@ -25,13 +27,17 @@
   "license": "MIT",
   "devDependencies": {
     "@types/koa": "^2.0.48",
+    "c8": "^5.0.1",
     "dotenv": "^8.0.0",
     "find-my-way": "^2.0.1",
+    "geojson-to-svg": "^1.0.3",
+    "geojson-to-svg-cli": "^1.0.0",
     "globby": "^9.2.0",
     "nock": "^10.0.6",
     "nodemon": "^1.19.1",
     "npm-run-all": "^4.1.5",
     "supertest": "^4.0.2",
+    "svgo": "^1.2.2",
     "tap-mocha-reporter": "^4.0.1",
     "typescript": "^3.4.5",
     "zora": "^3.0.1"
