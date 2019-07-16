@@ -27,8 +27,9 @@ exports.default = (t) => {
         const mapbox = nock(`https://api.mapbox.com`, { encodedQueryParams: true })
             .get('/directions/v5/mapbox/cycling/-82.41457%2C23.12719%3B-82.41601%2C23.13006')
             .query({
-            'radiuses': 'unlimited%3Bunlimited',
-            'access_token': index_1.default.mapbox.token
+            radiuses: 'unlimited%3Bunlimited',
+            alternatives: true,
+            access_token: index_1.default.mapbox.token
         })
             .reply(200, expected);
         const res = await req(search_1.default)
@@ -50,8 +51,9 @@ exports.default = (t) => {
         const mapbox = nock(`https://api.mapbox.com`, { encodedQueryParams: true })
             .get('/directions/v5/mapbox/cycling/-82.41457%2C23.12719%3B-82.41601%2C23.13006')
             .query({
-            'radiuses': 'unlimited%3Bunlimited',
-            'access_token': index_1.default.mapbox.token
+            radiuses: 'unlimited%3Bunlimited',
+            access_token: index_1.default.mapbox.token,
+            alternatives: true
         })
             .reply(500);
         const res = await req(search_1.default)
