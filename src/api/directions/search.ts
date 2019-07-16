@@ -9,12 +9,37 @@ import timer from '../../lib/middlewares/server-timing';
 
 interface WayPoint {
     coordinates: [number, number];
-    radius: 'unlimited';
 }
 
 interface MapboxRequestConfig {
     profile: 'cycling';
     waypoints: WayPoint[];
+    alternatives?: boolean;
+    steps?: boolean
+}
+
+interface MapboxRouteleg {
+    distance: number;
+    duration: number;
+    summary: string;
+}
+
+interface MapboxWaypoint {
+    name: string;
+    distance: number;
+    location: number;
+}
+
+interface MapboxRoute {
+    duration: number;
+    distance: number;
+    geometry: string;
+    legs: MapboxRouteleg[]
+}
+
+interface MapboxResponse {
+    routes: MapboxRoute[];
+    waypoints: MapboxWaypoint[];
 }
 
 const endpoint = async (ctx: Context) => {
@@ -27,8 +52,8 @@ const endpoint = async (ctx: Context) => {
 
     const mapbox_request_config: MapboxRequestConfig = {
         profile: 'cycling',
+        alternatives: true,
         // steps: true,
-        // @ts-ignore
         waypoints: waypoints.map(({lng, lat}: { lng: number, lat: number }) => ({
             coordinates: [lng, lat],
             radius: 'unlimited'
