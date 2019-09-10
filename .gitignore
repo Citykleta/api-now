@@ -69,5 +69,6 @@ src/**/**/*.js
 src/**/**/**/*.js
 test/*.js
 test/**/*.js
-db/osm-data/havana.osm
+scripts/data/**.mbtiles
+scripts/data/**.osm
 media
