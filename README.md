@@ -17,7 +17,7 @@ If you want the API to return relevant results you should download an open stree
 
 with curl:
 ```sh
-curl https://overpass-api.de/api/map?bbox=-82.4620,23.0320,-82.2780,23.1840 -o ./db/scripts/data/havana.osm
+curl https://overpass-api.de/api/map?bbox=-82.4620,23.0320,-82.2780,23.1840 -o ./scripts/data/havana.osm
 ```
 
 In the same way you should download tiles for La Habana so you can work on your map even when you are offline (note the tile server used in production will be different - provided by [Mapbox services](https://www.mapbox.com/))

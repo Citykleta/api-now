@@ -18,7 +18,7 @@ jobs:
       - run:
           name: start cutom db image
           command: |
-            docker run -d --name db --env-file $PWD/test/test.env -p 5432:5432 -v $PWD/test/fixture:/osm-data citykleta/db:latest
+            chmod +x ./scripts/start_test_db.sh && ./scripts/start_test_db.sh
       - run:
           name: check connectiviy
           command: |
