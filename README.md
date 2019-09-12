@@ -1,17 +1,17 @@
-# api-now
+# API
 
 [![CircleCI](https://circleci.com/gh/Citykleta/api-now.svg?style=svg)](https://circleci.com/gh/Citykleta/api-now)
 
-# Getting started (Developer - offline support)
+## Getting started (Developer - offline support)
 
-## prerequisites
+### prerequisites
 
-### software
+#### software
 
 You need to have installed on your machine [Docker](https://www.docker.com/) in order to run a database and a tile server.
 [Nodejs](https://nodejs.org/en/) must be installed too in order to run the web API server
 
-### data fixture
+#### data fixture
 
 If you want the API to return relevant results you should download an open street map data set for La Habana
 
@@ -20,10 +20,20 @@ with curl:
 curl https://overpass-api.de/api/map?bbox=-82.4620,23.0320,-82.2780,23.1840 -o ./db/scripts/data/havana.osm
 ```
 
-In the same way you should download tiles for La Habana so you can work on your map even when you are offline (note the tile server used in production will be different - provided by [Mapbox services]())
+In the same way you should download tiles for La Habana so you can work on your map even when you are offline (note the tile server used in production will be different - provided by [Mapbox services](https://www.mapbox.com/))
 You can go on [openmaptiles.com](https://openmaptiles.com/downloads/central-america/cuba/la-habana/) to download the data and put it in the ./db/scripts/data folder
 
-## Installation
+#### Service accounts
+
+Eventually you will need a free [Mapbox account](https://www.mapbox.com/) to get credentials you can pass with environment variables when running the nodejs server
+```sh
+export MAPBOX_USER=yourusernamehere
+export MAPBOX_token=yourtokenhere
+```
+
+Note for the moment route calculation is done with Mapbox and your therefore will require an Internet connection to get route data
+
+### Installation
 
 1. Install Nodejs dependencies by running ``npm install``
 

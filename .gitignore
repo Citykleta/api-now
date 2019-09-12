@@ -71,4 +71,3 @@ test/*.js
 test/**/*.js
 scripts/data/**.mbtiles
 scripts/data/**.osm
-media
