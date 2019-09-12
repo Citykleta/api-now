@@ -8,8 +8,8 @@
 
 ### software
 
-You need to have installed on your machine [Docker]() in order to run a database and a tile server.
-[Nodejs]() must be installed too in order to run the web API
+You need to have installed on your machine [Docker](https://www.docker.com/) in order to run a database and a tile server.
+[Nodejs](https://nodejs.org/en/) must be installed too in order to run the web API server
 
 ### data fixture
 
@@ -17,17 +17,13 @@ If you want the API to return relevant results you should download an open stree
 
 with curl:
 ```sh
-curl ... ./scripts/data/havana.osm
+curl https://overpass-api.de/api/map?bbox=-82.4620,23.0320,-82.2780,23.1840 -o ./db/scripts/data/havana.osm
 ```
 
-In the same way you should download tiles for La Habana so you can work on your map even when you are offline (note the tile server used in production will be different)
+In the same way you should download tiles for La Habana so you can work on your map even when you are offline (note the tile server used in production will be different - provided by [Mapbox services]())
+You can go on [openmaptiles.com](https://openmaptiles.com/downloads/central-america/cuba/la-habana/) to download the data and put it in the ./db/scripts/data folder
 
-with curl:
-```sh
-cu
-```
-
-### Installation
+## Installation
 
 1. Install Nodejs dependencies by running ``npm install``
 
@@ -48,11 +44,15 @@ If everything is fine you can open a browser with the url [http://localhost:8080
 4. Build the application by running ``npm run build``. You can now watch for file changes and automatically build the app thanks to ``npm run build:watch``
 
 5. Start now a dev server ``node ./scripts/dev_server.js`` (or with nodemon if you do not want to restart the server on every file change)
-If everything is fine go to [http://localhost:3000/poi?search=edificio](http://localhost:3000/poi?search=edificio) and you should see some data
+To check everything is fine, go to [http://localhost:3000/poi?search=edificio](http://localhost:3000/poi?search=edificio) and you should see some data
 ![api check sreenshot](./media/api_check.png)
 
+## Tests
 
+There are some integration tests which require an actual database connection. You need therefore to start a test database first by running
+``./scripts/start_db_test.sh``. Note it will map the container port to the host port number 5433 so that you can have both databases running in the same time: your test database and your dev database 
 
+Then simply run ``npm t``
 
 
 

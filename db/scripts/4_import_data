@@ -13,10 +13,9 @@ fi
 
 echo "importing osm file $1 into database $POSTGRES_DB";
 
-osm2pgsql $1 --create \
+osm2pgsql $1 \
 --database ${POSTGRES_DB} \
 --slim \
---create \
 --hstore-all \
 --latlong \
 --cache ${CACHE}
