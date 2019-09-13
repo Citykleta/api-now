@@ -15,6 +15,7 @@ SELECT
     description,
     distance
 FROM find_suggestions_closed_to($1, $2) JOIN points_of_interest USING(poi_id)
+ORDER BY distance
 LIMIT 5
 ;`,[lng,lat]);
     ctx.body = <Reverse_search_response_item[]>rows;

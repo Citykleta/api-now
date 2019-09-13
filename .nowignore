@@ -1,4 +1,7 @@
-node_modules
-test
 .idea
+.circleci
+db
+media
+node_modules
 scripts
+test
