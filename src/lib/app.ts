@@ -1,8 +1,8 @@
-import * as Koa from 'koa';
-import * as logger from 'koa-logger';
+import Koa from 'koa';
+import logger from 'koa-logger';
 import {Endpoint} from './interfaces';
 import error from './middlewares/error';
-import * as cors from '@koa/cors';
+import cors from '@koa/cors';
 import conf from '../conf/index';
 
 // process.stdout
