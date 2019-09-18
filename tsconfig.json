@@ -7,6 +7,7 @@
     "moduleResolution": "node",
     "noImplicitAny": false,
     "target": "esnext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "esModuleInterop": true
   }
 }

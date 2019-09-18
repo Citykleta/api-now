@@ -1,10 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const poi_1 = require("../../src/api/locations/handlers/poi");
-const req = require("supertest");
-const Koa = require("koa");
+const supertest_1 = __importDefault(require("supertest"));
+const koa_1 = __importDefault(require("koa"));
 const createApp = db => {
-    const app = new Koa();
+    const app = new koa_1.default();
     app.use(poi_1.handler(db));
     return app.callback();
 };
@@ -43,7 +46,7 @@ exports.default = (t) => {
             }];
         // GIVEN
         const db = create_db_stub(expected);
-        const res = await req(createApp(db))
+        const res = await supertest_1.default(createApp(db))
             .get('/?search=foo')
             .expect(200);
         // EXPECT
@@ -87,7 +90,7 @@ LIMIT 5
             }];
         // GIVEN
         const db = create_db_stub(expected);
-        const res = await req(createApp(db))
+        const res = await supertest_1.default(createApp(db))
             .get('/?search=foo+bar')
             .expect(200);
         // EXPECT

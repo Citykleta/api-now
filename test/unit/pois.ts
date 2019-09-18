@@ -1,7 +1,7 @@
 import {Assert} from 'zora';
 import {handler as search_location_handler} from '../../src/api/locations/handlers/poi';
-import * as req from 'supertest';
-import * as Koa from 'koa';
+import req from 'supertest';
+import Koa from 'koa';
 
 const createApp = db => {
     const app = new Koa();

@@ -64,6 +64,39 @@ There are some integration tests which require an actual database connection. Yo
 
 Then simply run ``npm t``
 
+### Coverage 
+
+You can also have the test coverage by running 
+
+```sh
+npm run test:coverage
+```
+
+Then see the result by opening the file ``./coverage/index.html``
+
+## Altogether
+
+The previous sections detailed the dev workflow. However you can combine all the previous processes by directly running 
+
+```sh
+./scripts/dev.sh
+```
+
+This script will
+1. start and feed a dev db (on port 5432)
+2. start and feed a test db (on port 5433)
+3. start a tile server on port 8080
+4. watch source files and compile them on changes
+5. start a dev server and restart it whenever a source file changes
+
+Note that some of these processes will run in the background and you will need to wait few seconds for example before the databases are available
+
+In the same way closing the bash terminal won't terminate containers so when you want to shut them down you will need to do it explicitly with the following command for example:
+
+```sh
+docker container stop $(docker container ls -q);
+```
+
 
 
  

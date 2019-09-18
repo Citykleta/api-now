@@ -1,6 +1,6 @@
 import {Context} from 'koa';
 import {create_app} from '../../lib/app';
-import body from 'koa-bodyparser';
+import  body from 'koa-bodyparser';
 import {middleware as schema} from 'koa-json-schema';
 import {Direction_search_query_body} from '../../lib/interfaces';
 import direction_service from '@mapbox/mapbox-sdk/services/directions';

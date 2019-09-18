@@ -1,9 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const search_1 = require("../../src/api/directions/search");
-const req = require("supertest");
-const nock = require("nock");
-const index_1 = require("../../src/conf/index");
+const search_1 = __importDefault(require("../../src/api/directions/search"));
+const supertest_1 = __importDefault(require("supertest"));
+const nock_1 = __importDefault(require("nock"));
+const index_1 = __importDefault(require("../../src/conf/index"));
 exports.default = (t) => {
     t.test('forward valid query to mapbox with cycling profile', async (t) => {
         const expected = {
@@ -24,7 +27,7 @@ exports.default = (t) => {
             'code': 'Ok',
             'uuid': 'cjs1wlink00qi42pawtwxhcyi'
         };
-        const mapbox = nock(`https://api.mapbox.com`, { encodedQueryParams: true })
+        const mapbox = nock_1.default(`https://api.mapbox.com`, { encodedQueryParams: true })
             .get('/directions/v5/mapbox/cycling/-82.41457%2C23.12719%3B-82.41601%2C23.13006')
             .query({
             radiuses: 'unlimited%3Bunlimited',
@@ -32,7 +35,7 @@ exports.default = (t) => {
             access_token: index_1.default.mapbox.token
         })
             .reply(200, expected);
-        const res = await req(search_1.default)
+        const res = await supertest_1.default(search_1.default)
             .post('/')
             .send({
             waypoints: [{
@@ -48,7 +51,7 @@ exports.default = (t) => {
         t.ok(mapbox.isDone(), 'mapbox should have been called');
     });
     t.test('return 503 when map box returns an error', async (t) => {
-        const mapbox = nock(`https://api.mapbox.com`, { encodedQueryParams: true })
+        const mapbox = nock_1.default(`https://api.mapbox.com`, { encodedQueryParams: true })
             .get('/directions/v5/mapbox/cycling/-82.41457%2C23.12719%3B-82.41601%2C23.13006')
             .query({
             radiuses: 'unlimited%3Bunlimited',
@@ -56,7 +59,7 @@ exports.default = (t) => {
             alternatives: true
         })
             .reply(500);
-        const res = await req(search_1.default)
+        const res = await supertest_1.default(search_1.default)
             .post('/')
             .send({
             waypoints: [{

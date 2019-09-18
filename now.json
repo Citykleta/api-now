@@ -49,6 +49,14 @@
         "GET",
         "OPTIONS"
       ]
+    },
+    {
+      "src": "/leisure",
+      "dest": "src/api/leisure/index.ts",
+      "methods": [
+        "GET",
+        "OPTIONS"
+      ]
     }
   ]
 }

@@ -1,7 +1,7 @@
 import {Assert} from 'zora';
-import searchApp from '../../src/api/directions/search';
-import * as req from 'supertest';
-import * as nock from 'nock';
+import search_app from '../../src/api/directions/search';
+import req from 'supertest';
+import nock from 'nock';
 import conf from '../../src/conf/index';
 
 export default (t: Assert) => {
@@ -33,7 +33,7 @@ export default (t: Assert) => {
             })
             .reply(200, expected);
 
-        const res = await req(searchApp)
+        const res = await req(search_app)
             .post('/')
             .send({
                 waypoints: [{
@@ -60,7 +60,7 @@ export default (t: Assert) => {
             })
             .reply(500);
 
-        const res = await req(searchApp)
+        const res = await req(search_app)
             .post('/')
             .send({
                 waypoints: [{

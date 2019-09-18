@@ -1,6 +1,6 @@
 import {Assert} from 'zora';
 import app from '../../src/api/locations/reverse';
-import * as req from 'supertest';
+import req from 'supertest';
 
 const location_match = [{
     "address": {

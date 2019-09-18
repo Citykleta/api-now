@@ -1,6 +1,6 @@
 import {Assert} from 'zora';
 import app from '../../src/api/locations/poi';
-import * as req from 'supertest';
+import req from 'supertest';
 
 const maritza_matches = [{
     'id': 169,

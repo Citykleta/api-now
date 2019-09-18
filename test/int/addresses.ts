@@ -1,6 +1,6 @@
 import {Assert} from 'zora';
 import app from '../../src/api/addresses/index';
-import * as req from 'supertest';
+import req from 'supertest';
 
 
 const generate_test_case = (t: Assert, expected: any) => (query: string) => t.test(`${query}`, async t => {
