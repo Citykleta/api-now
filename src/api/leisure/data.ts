@@ -60,7 +60,7 @@ export default [{
 }, {
     id: 2,
     title: 'Vedado ride',
-    description: 'Going from one park to the other in the green and luxurious havana',
+    description: 'Going from one park to the other in the green and luxuriant havana',
     stops: [{
         type: 'point_of_interest',
         geometry: {
@@ -75,15 +75,6 @@ export default [{
         geometry: {
             type: 'Point',
             coordinates: [-82.383942, 23.139313]
-        },
-        name: 'Coppelia',
-        address: {},
-        description: `The famous icecream stop in Cuba, long queue but very cheap`
-    }, {
-        type: 'point_of_interest',
-        geometry: {
-            type: 'Point',
-            coordinates: [-82.381037, 23.137287]
         },
         name: 'Coppelia',
         address: {},

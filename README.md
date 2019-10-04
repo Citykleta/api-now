@@ -96,11 +96,3 @@ In the same way closing the bash terminal won't terminate containers so when you
 ```sh
 docker container stop $(docker container ls -q);
 ```
-
-
-
- 
-
-
-
- 

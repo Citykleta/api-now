@@ -12,7 +12,7 @@
     "build": "tsc",
     "build:watch": "npm run build -- -w",
     "serve:watch": "nodemon ./scripts/dev-server.js",
-    "dev": "npm-run-all -p *:watch",
+    "dev": "./scripts/dev.sh",
     "build:media": "node ./scripts/get_municipalities_as_GeoJson.js | tee ./media/havana.json | geojson-to-svg > ./media/havana.svg",
     "now-build": "NODE_ENV=production npm run build"
   },
