@@ -92,7 +92,7 @@ export default [{
         type: 'point_of_interest',
         geometry: {
             type: 'Point',
-            coordinates: [-82.381037, 23.137287]
+            coordinates: [-82.390398, 23.137076]
         },
         name: 'El Hueco de Vedado',
         address: {},
@@ -101,7 +101,7 @@ export default [{
         type: 'point_of_interest',
         geometry: {
             type: 'Point',
-            coordinates: [-82.381037, 23.137287]
+            coordinates: [-82.394339, 23.13459]
         },
         name: 'Agropecuario',
         address: {},
