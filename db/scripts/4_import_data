@@ -13,7 +13,7 @@ fi
 
 echo "importing osm file $1 into database $POSTGRES_DB";
 
-osm2pgsql $1 \
+osm2pgsql $1 --create \
 --database ${POSTGRES_DB} \
 --slim \
 --hstore-all \

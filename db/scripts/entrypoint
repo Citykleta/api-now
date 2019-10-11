@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+set -e
+
+# Perform all actions as $POSTGRES_USER
+export PGUSER="$POSTGRES_USER"
+
 #execute each script
 create_extensions
 create_schema
