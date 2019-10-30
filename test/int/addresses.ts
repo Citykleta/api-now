@@ -2,7 +2,6 @@ import {Assert} from 'zora';
 import app from '../../src/api/addresses/index';
 import req from 'supertest';
 
-
 const generate_test_case = (t: Assert, expected: any) => (query: string) => t.test(`${query}`, async t => {
     const res = await req(app)
         .get('/')
@@ -34,7 +33,7 @@ export default (t: Assert) => {
             '1 y 10',
             '1ra avenida y calle 10',
             '1ra avenida esquina calle 10',
-            '1ra avenida esq. a 10',
+            '1ra avenida esq. a 10'
         ];
 
         const zanja_and_galiano = [{
@@ -70,7 +69,7 @@ export default (t: Assert) => {
         });
     });
 
-    t.test('find a block', t => {
+    test('find a block', t => {
 
         const ten_between_first_and_third = [{
             'type': 'street_block',
