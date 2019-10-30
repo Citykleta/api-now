@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "node -r ./test/load_conf.js node_modules/.bin/pta test/**/*.js",
+    "test": "node -r ./test/load_conf.js node_modules/.bin/pta",
     "test:coverage": "c8 -r html npm test",
     "build": "tsc",
     "build:watch": "npm run build -- -w",

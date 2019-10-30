@@ -1,7 +1,7 @@
 FROM postgres:12
 
 ENV POSTGIS_MAJOR 3
-ENV POSTGIS_VERSION 3.0+dfsg-1~exp1.pgdg90+1
+ENV POSTGIS_VERSION 3.0.0+dfsg-1
 
 # Deps
 RUN apt-get update && apt-get install -y --fix-missing \
