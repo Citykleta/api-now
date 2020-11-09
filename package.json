@@ -30,7 +30,7 @@
     "@types/node": "^12.12.2",
     "c8": "^6.0.1",
     "dotenv": "^8.2.0",
-    "find-my-way": "^2.2.1",
+    "find-my-way": "^2.2.5",
     "geojson-to-svg-cli": "^1.0.0",
     "nock": "^11.6.0",
     "nodemon": "^1.19.4",
